@@ -2,7 +2,9 @@
     "name": "home-assistant-flows",
     "description": "Home Assistant automations in Node-RED",
     "version": "0.0.1",
-    "dependencies": {},
+    "dependencies": {
+        "node-red-contrib-home-assistant-websocket": "0.30.1"
+    },
     "node-red": {
         "settings": {
             "flowFile": "flow.json",

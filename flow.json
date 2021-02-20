@@ -1,1 +1,905 @@
-[]
+[
+    {
+        "id": "c1aba6ca.ae591",
+        "type": "tab",
+        "label": "Thermostats",
+        "disabled": false,
+        "info": "The standard homematic thermostat does not reflect the state I want, so a mqtt one is created with the state driven by this flow."
+    },
+    {
+        "id": "b559dfa2.ecc5b8",
+        "type": "server",
+        "name": "Home Assistant",
+        "legacy": false,
+        "addon": false,
+        "rejectUnauthorizedCerts": true,
+        "ha_boolean": "y|yes|true|on|home|open",
+        "connectionDelay": true,
+        "cacheJson": true
+    },
+    {
+        "id": "d03b4f35.65271",
+        "type": "mqtt-broker",
+        "name": "Home MQTT broker",
+        "broker": "mqtt.lanquarden.com",
+        "port": "1883",
+        "clientid": "",
+        "usetls": false,
+        "compatmode": false,
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": ""
+    },
+    {
+        "id": "31755730.26a5f",
+        "type": "mqtt out",
+        "z": "c1aba6ca.ae591",
+        "name": "publish to climate topics",
+        "topic": "",
+        "qos": "1",
+        "retain": "true",
+        "broker": "d03b4f35.65271",
+        "x": 1070,
+        "y": 400,
+        "wires": []
+    },
+    {
+        "id": "e26d421a.098628",
+        "type": "server-state-changed",
+        "z": "c1aba6ca.ae591",
+        "name": "homematic thermostats",
+        "server": "b559dfa2.ecc5b8",
+        "version": 1,
+        "exposeToHomeAssistant": false,
+        "haConfig": [
+            {
+                "property": "name",
+                "value": ""
+            },
+            {
+                "property": "icon",
+                "value": ""
+            }
+        ],
+        "entityidfilter": "climate.(neq1521926|neq1521913|neq1521927|neq1521928)",
+        "entityidfiltertype": "regex",
+        "outputinitially": false,
+        "state_type": "str",
+        "haltifstate": "",
+        "halt_if_type": "str",
+        "halt_if_compare": "is",
+        "outputs": 1,
+        "output_only_on_state_change": false,
+        "for": 0,
+        "forType": "num",
+        "forUnits": "minutes",
+        "ignorePrevStateNull": false,
+        "ignorePrevStateUnknown": false,
+        "ignorePrevStateUnavailable": false,
+        "ignoreCurrentStateUnknown": false,
+        "ignoreCurrentStateUnavailable": false,
+        "x": 240,
+        "y": 400,
+        "wires": [
+            [
+                "475d7662.493a38"
+            ]
+        ]
+    },
+    {
+        "id": "f5663750.4953c8",
+        "type": "debug",
+        "z": "c1aba6ca.ae591",
+        "name": "mqtt thermostat topics",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1060,
+        "y": 340,
+        "wires": []
+    },
+    {
+        "id": "475d7662.493a38",
+        "type": "change",
+        "z": "c1aba6ca.ae591",
+        "name": "extract info",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "{\ttopic & '/current_temperature/state': data.new_state.attributes.current_temperature,\ttopic & '/temperature/state': data.new_state.attributes.temperature,\ttopic & '/mode/state': data.new_state.state\t}",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 470,
+        "y": 400,
+        "wires": [
+            [
+                "1178acba.31a06b"
+            ]
+        ]
+    },
+    {
+        "id": "1178acba.31a06b",
+        "type": "split",
+        "z": "c1aba6ca.ae591",
+        "name": "",
+        "splt": "\\n",
+        "spltType": "str",
+        "arraySplt": 1,
+        "arraySpltType": "len",
+        "stream": false,
+        "addname": "topic",
+        "x": 650,
+        "y": 400,
+        "wires": [
+            [
+                "df134607.2a9d"
+            ]
+        ]
+    },
+    {
+        "id": "f140120e.c47518",
+        "type": "inject",
+        "z": "c1aba6ca.ae591",
+        "name": "test message",
+        "props": [
+            {
+                "p": "topic",
+                "vt": "str"
+            },
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "climate.neq1411046",
+        "payload": "{\"entity_id\":\"climate.neq1411046\",\"old_state\":{\"entity_id\":\"climate.neq1411046\",\"state\":\"heat\",\"attributes\":{\"test\":\"bla\",\"hvac_modes\":[\"auto\",\"heat\",\"off\"],\"min_temp\":4.5,\"max_temp\":30.5,\"target_temp_step\":0.5,\"preset_modes\":[\"boost\",\"comfort\",\"eco\"],\"current_temperature\":20.4,\"temperature\":7,\"preset_mode\":null,\"id\":\"NEQ1411046\",\"interface\":\"wireless\",\"battery\":2.6,\"rssi_peer\":-70,\"valve\":0,\"mode\":\"Manual\",\"friendly_name\":\"Valve Kitchen\",\"supported_features\":17},\"last_changed\":\"2021-02-20T20:09:54.342467+00:00\",\"last_updated\":\"2021-02-20T21:20:07.759692+00:00\",\"context\":{\"id\":\"7c52497e115eed9d553b041eb42adcb7\",\"parent_id\":null,\"user_id\":\"b94e9c8c5cc94eae87ebb1d303e3a681\"},\"original_state\":\"heat\"},\"new_state\":{\"entity_id\":\"climate.neq1411046\",\"state\":\"heat\",\"attributes\":{\"test\":\"blabla\",\"hvac_modes\":[\"auto\",\"heat\",\"off\"],\"min_temp\":4.5,\"max_temp\":30.5,\"target_temp_step\":0.5,\"preset_modes\":[\"boost\",\"comfort\",\"eco\"],\"current_temperature\":20.4,\"temperature\":7,\"preset_mode\":null,\"id\":\"NEQ1411046\",\"interface\":\"wireless\",\"battery\":2.6,\"rssi_peer\":-70,\"valve\":5,\"mode\":\"Manual\",\"friendly_name\":\"Valve Kitchen\",\"supported_features\":17},\"last_changed\":\"2021-02-20T20:09:54.342467+00:00\",\"last_updated\":\"2021-02-20T21:21:30.995123+00:00\",\"context\":{\"id\":\"4339814c324a68930bc8f9d0f5f08fb9\",\"parent_id\":null,\"user_id\":\"b94e9c8c5cc94eae87ebb1d303e3a681\"},\"original_state\":\"heat\",\"timeSinceChangedMs\":4296655}}",
+        "payloadType": "json",
+        "x": 230,
+        "y": 560,
+        "wires": [
+            [
+                "bae37ebd.91729"
+            ]
+        ]
+    },
+    {
+        "id": "df134607.2a9d",
+        "type": "change",
+        "z": "c1aba6ca.ae591",
+        "name": "change topic",
+        "rules": [
+            {
+                "t": "change",
+                "p": "topic",
+                "pt": "msg",
+                "from": "climate.neq1521926",
+                "fromt": "str",
+                "to": "living-room/climate",
+                "tot": "str"
+            },
+            {
+                "t": "change",
+                "p": "topic",
+                "pt": "msg",
+                "from": "climate.neq1521913",
+                "fromt": "str",
+                "to": "attic/climate",
+                "tot": "str"
+            },
+            {
+                "t": "change",
+                "p": "topic",
+                "pt": "msg",
+                "from": "climate.neq1521927",
+                "fromt": "str",
+                "to": "master-bed-room/climate",
+                "tot": "str"
+            },
+            {
+                "t": "change",
+                "p": "topic",
+                "pt": "msg",
+                "from": "climate.neq1521928",
+                "fromt": "str",
+                "to": "kids-bed-room/climate",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 830,
+        "y": 400,
+        "wires": [
+            [
+                "f5663750.4953c8",
+                "31755730.26a5f"
+            ]
+        ]
+    },
+    {
+        "id": "bae37ebd.91729",
+        "type": "trigger-state",
+        "z": "c1aba6ca.ae591",
+        "name": "living room heating active",
+        "server": "b559dfa2.ecc5b8",
+        "exposeToHomeAssistant": false,
+        "haConfig": [
+            {
+                "property": "name",
+                "value": ""
+            },
+            {
+                "property": "icon",
+                "value": ""
+            }
+        ],
+        "entityid": "climate.(neq1411046|neq1411058|neq1411004|oeq0238491)",
+        "entityidfiltertype": "regex",
+        "debugenabled": false,
+        "constraints": [
+            {
+                "targetType": "this_entity",
+                "targetValue": "",
+                "propertyType": "property",
+                "comparatorType": ">",
+                "comparatorValueDatatype": "num",
+                "comparatorValue": "5",
+                "propertyValue": "new_state.attributes.valve"
+            }
+        ],
+        "outputs": 2,
+        "customoutputs": [],
+        "outputinitially": false,
+        "state_type": "str",
+        "x": 470,
+        "y": 520,
+        "wires": [
+            [
+                "1d183c99.dac5f3"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "81fc5960.e2b4e8",
+        "type": "mqtt out",
+        "z": "c1aba6ca.ae591",
+        "name": "publish hvac action",
+        "topic": "living-room/climate/action/state",
+        "qos": "1",
+        "retain": "true",
+        "broker": "d03b4f35.65271",
+        "x": 1010,
+        "y": 560,
+        "wires": []
+    },
+    {
+        "id": "1d183c99.dac5f3",
+        "type": "change",
+        "z": "c1aba6ca.ae591",
+        "name": "set heating",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "heating",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 750,
+        "y": 520,
+        "wires": [
+            [
+                "81fc5960.e2b4e8"
+            ]
+        ]
+    },
+    {
+        "id": "324134f6.f60bf4",
+        "type": "trigger-state",
+        "z": "c1aba6ca.ae591",
+        "name": "living room heating inactive",
+        "server": "b559dfa2.ecc5b8",
+        "exposeToHomeAssistant": false,
+        "haConfig": [
+            {
+                "property": "name",
+                "value": ""
+            },
+            {
+                "property": "icon",
+                "value": ""
+            }
+        ],
+        "entityid": "climate.(neq1411046|neq1411058|neq1411004|oeq0238491)",
+        "entityidfiltertype": "regex",
+        "debugenabled": false,
+        "constraints": [
+            {
+                "targetType": "entity_id",
+                "targetValue": "climate.neq1411046",
+                "propertyType": "property",
+                "comparatorType": "<=",
+                "comparatorValueDatatype": "num",
+                "comparatorValue": "5",
+                "propertyValue": "attributes.valve"
+            },
+            {
+                "targetType": "entity_id",
+                "targetValue": "climate.neq1411058",
+                "propertyType": "property",
+                "comparatorType": "<=",
+                "comparatorValueDatatype": "num",
+                "comparatorValue": "5",
+                "propertyValue": "attributes.valve"
+            },
+            {
+                "targetType": "entity_id",
+                "targetValue": "climate.neq1411004",
+                "propertyType": "property",
+                "comparatorType": "<=",
+                "comparatorValueDatatype": "num",
+                "comparatorValue": "5",
+                "propertyValue": "attributes.valve"
+            },
+            {
+                "targetType": "entity_id",
+                "targetValue": "climate.oeq0238491",
+                "propertyType": "property",
+                "comparatorType": "<=",
+                "comparatorValueDatatype": "num",
+                "comparatorValue": "5",
+                "propertyValue": "attributes.valve"
+            }
+        ],
+        "outputs": 2,
+        "customoutputs": [],
+        "outputinitially": false,
+        "state_type": "str",
+        "x": 480,
+        "y": 600,
+        "wires": [
+            [
+                "d9736b63.82cca"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "d9736b63.82cca",
+        "type": "change",
+        "z": "c1aba6ca.ae591",
+        "name": "set idle",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "idle",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 740,
+        "y": 600,
+        "wires": [
+            [
+                "81fc5960.e2b4e8"
+            ]
+        ]
+    },
+    {
+        "id": "9d51512.2b7e1b",
+        "type": "inject",
+        "z": "c1aba6ca.ae591",
+        "name": "test message",
+        "props": [
+            {
+                "p": "topic",
+                "vt": "str"
+            },
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "climate.neq1411046",
+        "payload": "{\"entity_id\":\"climate.neq1411046\",\"old_state\":{\"entity_id\":\"climate.neq1411046\",\"state\":\"heat\",\"attributes\":{\"test\":\"bla\",\"hvac_modes\":[\"auto\",\"heat\",\"off\"],\"min_temp\":4.5,\"max_temp\":30.5,\"target_temp_step\":0.5,\"preset_modes\":[\"boost\",\"comfort\",\"eco\"],\"current_temperature\":20.4,\"temperature\":7,\"preset_mode\":null,\"id\":\"NEQ1411046\",\"interface\":\"wireless\",\"battery\":2.6,\"rssi_peer\":-70,\"valve\":0,\"mode\":\"Manual\",\"friendly_name\":\"Valve Kitchen\",\"supported_features\":17},\"last_changed\":\"2021-02-20T20:09:54.342467+00:00\",\"last_updated\":\"2021-02-20T21:20:07.759692+00:00\",\"context\":{\"id\":\"7c52497e115eed9d553b041eb42adcb7\",\"parent_id\":null,\"user_id\":\"b94e9c8c5cc94eae87ebb1d303e3a681\"},\"original_state\":\"heat\"},\"new_state\":{\"entity_id\":\"climate.neq1411046\",\"state\":\"heat\",\"attributes\":{\"test\":\"blabla\",\"hvac_modes\":[\"auto\",\"heat\",\"off\"],\"min_temp\":4.5,\"max_temp\":30.5,\"target_temp_step\":0.5,\"preset_modes\":[\"boost\",\"comfort\",\"eco\"],\"current_temperature\":20.4,\"temperature\":7,\"preset_mode\":null,\"id\":\"NEQ1411046\",\"interface\":\"wireless\",\"battery\":2.6,\"rssi_peer\":-70,\"valve\":5,\"mode\":\"Manual\",\"friendly_name\":\"Valve Kitchen\",\"supported_features\":17},\"last_changed\":\"2021-02-20T20:09:54.342467+00:00\",\"last_updated\":\"2021-02-20T21:21:30.995123+00:00\",\"context\":{\"id\":\"4339814c324a68930bc8f9d0f5f08fb9\",\"parent_id\":null,\"user_id\":\"b94e9c8c5cc94eae87ebb1d303e3a681\"},\"original_state\":\"heat\",\"timeSinceChangedMs\":4296655}}",
+        "payloadType": "json",
+        "x": 230,
+        "y": 740,
+        "wires": [
+            [
+                "11db3f26.d113c9"
+            ]
+        ]
+    },
+    {
+        "id": "11db3f26.d113c9",
+        "type": "trigger-state",
+        "z": "c1aba6ca.ae591",
+        "name": "master bed room heating active",
+        "server": "b559dfa2.ecc5b8",
+        "exposeToHomeAssistant": false,
+        "haConfig": [
+            {
+                "property": "name",
+                "value": ""
+            },
+            {
+                "property": "icon",
+                "value": ""
+            }
+        ],
+        "entityid": "climate.(neq1413070|oeq0238454|neq1411004|oeq0238491)",
+        "entityidfiltertype": "regex",
+        "debugenabled": false,
+        "constraints": [
+            {
+                "targetType": "this_entity",
+                "targetValue": "",
+                "propertyType": "property",
+                "comparatorType": ">",
+                "comparatorValueDatatype": "num",
+                "comparatorValue": "5",
+                "propertyValue": "new_state.attributes.valve"
+            }
+        ],
+        "outputs": 2,
+        "customoutputs": [],
+        "outputinitially": false,
+        "state_type": "str",
+        "x": 490,
+        "y": 700,
+        "wires": [
+            [
+                "dc9188f4.6244f8"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "7b462486.d79954",
+        "type": "mqtt out",
+        "z": "c1aba6ca.ae591",
+        "name": "publish hvac action",
+        "topic": "master-bed-room/climate/action/state",
+        "qos": "1",
+        "retain": "true",
+        "broker": "d03b4f35.65271",
+        "x": 1010,
+        "y": 740,
+        "wires": []
+    },
+    {
+        "id": "dc9188f4.6244f8",
+        "type": "change",
+        "z": "c1aba6ca.ae591",
+        "name": "set heating",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "heating",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 750,
+        "y": 700,
+        "wires": [
+            [
+                "7b462486.d79954"
+            ]
+        ]
+    },
+    {
+        "id": "1d9cc45a.9f1814",
+        "type": "trigger-state",
+        "z": "c1aba6ca.ae591",
+        "name": "master bed room heating inactive",
+        "server": "b559dfa2.ecc5b8",
+        "exposeToHomeAssistant": false,
+        "haConfig": [
+            {
+                "property": "name",
+                "value": ""
+            },
+            {
+                "property": "icon",
+                "value": ""
+            }
+        ],
+        "entityid": "climate.(neq1413070|oeq0238454)",
+        "entityidfiltertype": "regex",
+        "debugenabled": false,
+        "constraints": [
+            {
+                "targetType": "entity_id",
+                "targetValue": "climate.oeq0238454",
+                "propertyType": "property",
+                "comparatorType": "<=",
+                "comparatorValueDatatype": "num",
+                "comparatorValue": "5",
+                "propertyValue": "attributes.valve"
+            },
+            {
+                "targetType": "entity_id",
+                "targetValue": "climate.neq1413070",
+                "propertyType": "property",
+                "comparatorType": "<=",
+                "comparatorValueDatatype": "num",
+                "comparatorValue": "5",
+                "propertyValue": "attributes.valve"
+            }
+        ],
+        "outputs": 2,
+        "customoutputs": [],
+        "outputinitially": false,
+        "state_type": "str",
+        "x": 500,
+        "y": 780,
+        "wires": [
+            [
+                "c454a3e5.2c89a8"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "c454a3e5.2c89a8",
+        "type": "change",
+        "z": "c1aba6ca.ae591",
+        "name": "set idle",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "idle",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 740,
+        "y": 780,
+        "wires": [
+            [
+                "7b462486.d79954"
+            ]
+        ]
+    },
+    {
+        "id": "fd928dda.926b08",
+        "type": "inject",
+        "z": "c1aba6ca.ae591",
+        "name": "test message",
+        "props": [
+            {
+                "p": "topic",
+                "vt": "str"
+            },
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "climate.neq1411046",
+        "payload": "{\"entity_id\":\"climate.neq1411046\",\"old_state\":{\"entity_id\":\"climate.neq1411046\",\"state\":\"heat\",\"attributes\":{\"test\":\"bla\",\"hvac_modes\":[\"auto\",\"heat\",\"off\"],\"min_temp\":4.5,\"max_temp\":30.5,\"target_temp_step\":0.5,\"preset_modes\":[\"boost\",\"comfort\",\"eco\"],\"current_temperature\":20.4,\"temperature\":7,\"preset_mode\":null,\"id\":\"NEQ1411046\",\"interface\":\"wireless\",\"battery\":2.6,\"rssi_peer\":-70,\"valve\":0,\"mode\":\"Manual\",\"friendly_name\":\"Valve Kitchen\",\"supported_features\":17},\"last_changed\":\"2021-02-20T20:09:54.342467+00:00\",\"last_updated\":\"2021-02-20T21:20:07.759692+00:00\",\"context\":{\"id\":\"7c52497e115eed9d553b041eb42adcb7\",\"parent_id\":null,\"user_id\":\"b94e9c8c5cc94eae87ebb1d303e3a681\"},\"original_state\":\"heat\"},\"new_state\":{\"entity_id\":\"climate.neq1411046\",\"state\":\"heat\",\"attributes\":{\"test\":\"blabla\",\"hvac_modes\":[\"auto\",\"heat\",\"off\"],\"min_temp\":4.5,\"max_temp\":30.5,\"target_temp_step\":0.5,\"preset_modes\":[\"boost\",\"comfort\",\"eco\"],\"current_temperature\":20.4,\"temperature\":7,\"preset_mode\":null,\"id\":\"NEQ1411046\",\"interface\":\"wireless\",\"battery\":2.6,\"rssi_peer\":-70,\"valve\":5,\"mode\":\"Manual\",\"friendly_name\":\"Valve Kitchen\",\"supported_features\":17},\"last_changed\":\"2021-02-20T20:09:54.342467+00:00\",\"last_updated\":\"2021-02-20T21:21:30.995123+00:00\",\"context\":{\"id\":\"4339814c324a68930bc8f9d0f5f08fb9\",\"parent_id\":null,\"user_id\":\"b94e9c8c5cc94eae87ebb1d303e3a681\"},\"original_state\":\"heat\",\"timeSinceChangedMs\":4296655}}",
+        "payloadType": "json",
+        "x": 230,
+        "y": 920,
+        "wires": [
+            [
+                "e15d851d.27248"
+            ]
+        ]
+    },
+    {
+        "id": "e15d851d.27248",
+        "type": "trigger-state",
+        "z": "c1aba6ca.ae591",
+        "name": "kids bed room heating active",
+        "server": "b559dfa2.ecc5b8",
+        "exposeToHomeAssistant": false,
+        "haConfig": [
+            {
+                "property": "name",
+                "value": ""
+            },
+            {
+                "property": "icon",
+                "value": ""
+            }
+        ],
+        "entityid": "climate.oeq0238216",
+        "entityidfiltertype": "regex",
+        "debugenabled": false,
+        "constraints": [
+            {
+                "targetType": "this_entity",
+                "targetValue": "",
+                "propertyType": "property",
+                "comparatorType": ">",
+                "comparatorValueDatatype": "num",
+                "comparatorValue": "5",
+                "propertyValue": "new_state.attributes.valve"
+            }
+        ],
+        "outputs": 2,
+        "customoutputs": [],
+        "outputinitially": false,
+        "state_type": "str",
+        "x": 480,
+        "y": 920,
+        "wires": [
+            [
+                "8cc84aac.72363"
+            ],
+            [
+                "d54f3b03.0d3858"
+            ]
+        ]
+    },
+    {
+        "id": "f93a95f1.7ebfa8",
+        "type": "mqtt out",
+        "z": "c1aba6ca.ae591",
+        "name": "publish hvac action",
+        "topic": "kids-bed-room/climate/action/state",
+        "qos": "1",
+        "retain": "true",
+        "broker": "d03b4f35.65271",
+        "x": 1010,
+        "y": 920,
+        "wires": []
+    },
+    {
+        "id": "8cc84aac.72363",
+        "type": "change",
+        "z": "c1aba6ca.ae591",
+        "name": "set heating",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "heating",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 750,
+        "y": 880,
+        "wires": [
+            [
+                "f93a95f1.7ebfa8"
+            ]
+        ]
+    },
+    {
+        "id": "d54f3b03.0d3858",
+        "type": "change",
+        "z": "c1aba6ca.ae591",
+        "name": "set idle",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "idle",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 740,
+        "y": 960,
+        "wires": [
+            [
+                "f93a95f1.7ebfa8"
+            ]
+        ]
+    },
+    {
+        "id": "7b4776a9.5a5248",
+        "type": "inject",
+        "z": "c1aba6ca.ae591",
+        "name": "test message",
+        "props": [
+            {
+                "p": "topic",
+                "vt": "str"
+            },
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "climate.neq1411046",
+        "payload": "{\"entity_id\":\"climate.neq1411046\",\"old_state\":{\"entity_id\":\"climate.neq1411046\",\"state\":\"heat\",\"attributes\":{\"test\":\"bla\",\"hvac_modes\":[\"auto\",\"heat\",\"off\"],\"min_temp\":4.5,\"max_temp\":30.5,\"target_temp_step\":0.5,\"preset_modes\":[\"boost\",\"comfort\",\"eco\"],\"current_temperature\":20.4,\"temperature\":7,\"preset_mode\":null,\"id\":\"NEQ1411046\",\"interface\":\"wireless\",\"battery\":2.6,\"rssi_peer\":-70,\"valve\":0,\"mode\":\"Manual\",\"friendly_name\":\"Valve Kitchen\",\"supported_features\":17},\"last_changed\":\"2021-02-20T20:09:54.342467+00:00\",\"last_updated\":\"2021-02-20T21:20:07.759692+00:00\",\"context\":{\"id\":\"7c52497e115eed9d553b041eb42adcb7\",\"parent_id\":null,\"user_id\":\"b94e9c8c5cc94eae87ebb1d303e3a681\"},\"original_state\":\"heat\"},\"new_state\":{\"entity_id\":\"climate.neq1411046\",\"state\":\"heat\",\"attributes\":{\"test\":\"blabla\",\"hvac_modes\":[\"auto\",\"heat\",\"off\"],\"min_temp\":4.5,\"max_temp\":30.5,\"target_temp_step\":0.5,\"preset_modes\":[\"boost\",\"comfort\",\"eco\"],\"current_temperature\":20.4,\"temperature\":7,\"preset_mode\":null,\"id\":\"NEQ1411046\",\"interface\":\"wireless\",\"battery\":2.6,\"rssi_peer\":-70,\"valve\":5,\"mode\":\"Manual\",\"friendly_name\":\"Valve Kitchen\",\"supported_features\":17},\"last_changed\":\"2021-02-20T20:09:54.342467+00:00\",\"last_updated\":\"2021-02-20T21:21:30.995123+00:00\",\"context\":{\"id\":\"4339814c324a68930bc8f9d0f5f08fb9\",\"parent_id\":null,\"user_id\":\"b94e9c8c5cc94eae87ebb1d303e3a681\"},\"original_state\":\"heat\",\"timeSinceChangedMs\":4296655}}",
+        "payloadType": "json",
+        "x": 230,
+        "y": 1080,
+        "wires": [
+            [
+                "c3c29644.242e28"
+            ]
+        ]
+    },
+    {
+        "id": "c3c29644.242e28",
+        "type": "trigger-state",
+        "z": "c1aba6ca.ae591",
+        "name": "attic heating active",
+        "server": "b559dfa2.ecc5b8",
+        "exposeToHomeAssistant": false,
+        "haConfig": [
+            {
+                "property": "name",
+                "value": ""
+            },
+            {
+                "property": "icon",
+                "value": ""
+            }
+        ],
+        "entityid": "climate.oeq0238497",
+        "entityidfiltertype": "regex",
+        "debugenabled": false,
+        "constraints": [
+            {
+                "targetType": "this_entity",
+                "targetValue": "",
+                "propertyType": "property",
+                "comparatorType": ">",
+                "comparatorValueDatatype": "num",
+                "comparatorValue": "5",
+                "propertyValue": "new_state.attributes.valve"
+            }
+        ],
+        "outputs": 2,
+        "customoutputs": [],
+        "outputinitially": false,
+        "state_type": "str",
+        "x": 450,
+        "y": 1080,
+        "wires": [
+            [
+                "39cbc56e.d1b8fa"
+            ],
+            [
+                "cdc37ff9.876be"
+            ]
+        ]
+    },
+    {
+        "id": "dc1b5463.547d48",
+        "type": "mqtt out",
+        "z": "c1aba6ca.ae591",
+        "name": "publish hvac action",
+        "topic": "attic/climate/action/state",
+        "qos": "1",
+        "retain": "true",
+        "broker": "d03b4f35.65271",
+        "x": 1010,
+        "y": 1080,
+        "wires": []
+    },
+    {
+        "id": "39cbc56e.d1b8fa",
+        "type": "change",
+        "z": "c1aba6ca.ae591",
+        "name": "set heating",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "heating",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 750,
+        "y": 1040,
+        "wires": [
+            [
+                "dc1b5463.547d48"
+            ]
+        ]
+    },
+    {
+        "id": "cdc37ff9.876be",
+        "type": "change",
+        "z": "c1aba6ca.ae591",
+        "name": "set idle",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "idle",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 740,
+        "y": 1120,
+        "wires": [
+            [
+                "dc1b5463.547d48"
+            ]
+        ]
+    }
+]
