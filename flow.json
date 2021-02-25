@@ -1248,7 +1248,7 @@
                 "t": "set",
                 "p": "payload",
                 "pt": "msg",
-                "to": "(\t    $repititions := $contains(msg.topic, \"plus_five\") ? 5 : 0;\t    $element := function($x) {({\t        $string($x): {\t            'service': msg.payload=\"on\" ? \"increment\" : \"decrement\",\t            'data': {\t                'entity_id': $contains(msg.topic, \"enzo\") ? \"counter.enzo_robux\" : \"counter.nolan_robux\"\t                }\t            }\t    })};\t    $merge($map([0..$repititions], $element))\t)",
+                "to": "(\t    $repititions := $contains(msg.topic, \"plus_five\") ? 4 : 0;\t    $element := function($x) {({\t        $string($x): {\t            'service': msg.payload=\"on\" ? \"increment\" : \"decrement\",\t            'data': {\t                'entity_id': $contains(msg.topic, \"enzo\") ? \"counter.enzo_robux\" : \"counter.nolan_robux\"\t                }\t            }\t    })};\t    $merge($map([0..$repititions], $element))\t)",
                 "tot": "jsonata"
             }
         ],
