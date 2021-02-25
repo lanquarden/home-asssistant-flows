@@ -7,6 +7,13 @@
         "info": "The standard homematic thermostat does not reflect the state I want, so a mqtt one is created with the state driven by this flow."
     },
     {
+        "id": "553bfbb.b5eaa84",
+        "type": "tab",
+        "label": "Kids",
+        "disabled": false,
+        "info": ""
+    },
+    {
         "id": "b559dfa2.ecc5b8",
         "type": "server",
         "name": "Home Assistant",
@@ -1141,6 +1148,330 @@
             [
                 "5b1ff96a.49122",
                 "aff5357f.3d481"
+            ]
+        ]
+    },
+    {
+        "id": "694b867b.20adc8",
+        "type": "server-state-changed",
+        "z": "553bfbb.b5eaa84",
+        "name": "reward toggles",
+        "server": "b559dfa2.ecc5b8",
+        "version": 1,
+        "exposeToHomeAssistant": false,
+        "haConfig": [
+            {
+                "property": "name",
+                "value": ""
+            },
+            {
+                "property": "icon",
+                "value": ""
+            }
+        ],
+        "entityidfilter": "input_boolean\\.(enzo|nolan)_.*",
+        "entityidfiltertype": "regex",
+        "outputinitially": false,
+        "state_type": "str",
+        "haltifstate": "",
+        "halt_if_type": "str",
+        "halt_if_compare": "is",
+        "outputs": 1,
+        "output_only_on_state_change": true,
+        "for": 0,
+        "forType": "num",
+        "forUnits": "minutes",
+        "ignorePrevStateNull": false,
+        "ignorePrevStateUnknown": false,
+        "ignorePrevStateUnavailable": false,
+        "ignoreCurrentStateUnknown": false,
+        "ignoreCurrentStateUnavailable": false,
+        "x": 160,
+        "y": 100,
+        "wires": [
+            [
+                "414f21e0.5601a"
+            ]
+        ]
+    },
+    {
+        "id": "f41f0f7a.fc4eb",
+        "type": "api-call-service",
+        "z": "553bfbb.b5eaa84",
+        "name": "increment/decrement",
+        "server": "b559dfa2.ecc5b8",
+        "version": 1,
+        "debugenabled": false,
+        "service_domain": "counter",
+        "service": "",
+        "entityId": "",
+        "data": "",
+        "dataType": "jsonata",
+        "mergecontext": "",
+        "output_location": "",
+        "output_location_type": "none",
+        "mustacheAltTags": false,
+        "x": 1040,
+        "y": 100,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "414f21e0.5601a",
+        "type": "gate",
+        "z": "553bfbb.b5eaa84",
+        "name": "",
+        "controlTopic": "control",
+        "defaultState": "open",
+        "openCmd": "open",
+        "closeCmd": "close",
+        "toggleCmd": "toggle",
+        "defaultCmd": "default",
+        "statusCmd": "status",
+        "persist": false,
+        "x": 370,
+        "y": 100,
+        "wires": [
+            [
+                "afc25dc3.bdf818"
+            ]
+        ]
+    },
+    {
+        "id": "afc25dc3.bdf818",
+        "type": "change",
+        "z": "553bfbb.b5eaa84",
+        "name": "set counter action",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "(\t    $repititions := $contains(msg.topic, \"plus_five\") ? 5 : 0;\t    $element := function($x) {({\t        $string($x): {\t            'service': msg.payload=\"on\" ? \"increment\" : \"decrement\",\t            'data': {\t                'entity_id': $contains(msg.topic, \"enzo\") ? \"counter.enzo_robux\" : \"counter.nolan_robux\"\t                }\t            }\t    })};\t    $merge($map([0..$repititions], $element))\t)",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 570,
+        "y": 100,
+        "wires": [
+            [
+                "1555f232.ea9f8e"
+            ]
+        ]
+    },
+    {
+        "id": "ee90b4aa.b4bd18",
+        "type": "debug",
+        "z": "553bfbb.b5eaa84",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 990,
+        "y": 40,
+        "wires": []
+    },
+    {
+        "id": "2c394c14.0ddbdc",
+        "type": "inject",
+        "z": "553bfbb.b5eaa84",
+        "name": "trigger at midnight",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "00 00 * * *",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "control",
+        "payload": "close",
+        "payloadType": "str",
+        "x": 180,
+        "y": 240,
+        "wires": [
+            [
+                "414f21e0.5601a",
+                "f5676d4b.5d2c"
+            ]
+        ]
+    },
+    {
+        "id": "f5676d4b.5d2c",
+        "type": "delay",
+        "z": "553bfbb.b5eaa84",
+        "name": "",
+        "pauseType": "delay",
+        "timeout": "2",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "1",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "x": 420,
+        "y": 240,
+        "wires": [
+            [
+                "64685608.232ca"
+            ]
+        ]
+    },
+    {
+        "id": "64685608.232ca",
+        "type": "change",
+        "z": "553bfbb.b5eaa84",
+        "name": "create switch off commands",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "{\"enzo_shoes\":{\"service\":\"turn_off\",\"data\":{\"entity_id\":\"input_boolean.enzo_shoes\"}},\"enzo_clothes\":{\"service\":\"turn_off\",\"data\":{\"entity_id\":\"input_boolean.enzo_clothes\"}},\"enzo_devices\":{\"service\":\"turn_off\",\"data\":{\"entity_id\":\"input_boolean.enzo_devices\"}},\"enzo_dinner\":{\"service\":\"turn_off\",\"data\":{\"entity_id\":\"input_boolean.enzo_dinner\"}},\"enzo_teethbrushing\":{\"service\":\"turn_off\",\"data\":{\"entity_id\":\"input_boolean.enzo_toothbrush\"}},\"enzo_plus_five\":{\"service\":\"turn_off\",\"data\":{\"entity_id\":\"input_boolean.enzo_plus_five\"}},\"nolan_shoes\":{\"service\":\"turn_off\",\"data\":{\"entity_id\":\"input_boolean.nolan_shoes\"}},\"nolan_clothes\":{\"service\":\"turn_off\",\"data\":{\"entity_id\":\"input_boolean.nolan_clothes\"}},\"nolan_devices\":{\"service\":\"turn_off\",\"data\":{\"entity_id\":\"input_boolean.nolan_devices\"}},\"nolan_dinner\":{\"service\":\"turn_off\",\"data\":{\"entity_id\":\"input_boolean.nolan_dinner\"}},\"nolan_teethbrushing\":{\"service\":\"turn_off\",\"data\":{\"entity_id\":\"input_boolean.nolan_toothbrush\"}},\"nolan_plus_five\":{\"service\":\"turn_off\",\"data\":{\"entity_id\":\"input_boolean.nolan_plus_five\"}}}",
+                "tot": "json"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 660,
+        "y": 240,
+        "wires": [
+            [
+                "d92b09f3.964bb8",
+                "e63405fb.40889"
+            ]
+        ]
+    },
+    {
+        "id": "d92b09f3.964bb8",
+        "type": "split",
+        "z": "553bfbb.b5eaa84",
+        "name": "",
+        "splt": "\\n",
+        "spltType": "str",
+        "arraySplt": 1,
+        "arraySpltType": "len",
+        "stream": false,
+        "addname": "",
+        "x": 910,
+        "y": 280,
+        "wires": [
+            [
+                "6ef17aed.bd450c"
+            ]
+        ]
+    },
+    {
+        "id": "6ef17aed.bd450c",
+        "type": "api-call-service",
+        "z": "553bfbb.b5eaa84",
+        "name": "switch off",
+        "server": "b559dfa2.ecc5b8",
+        "version": 1,
+        "debugenabled": false,
+        "service_domain": "input_boolean",
+        "service": "",
+        "entityId": "",
+        "data": "",
+        "dataType": "jsonata",
+        "mergecontext": "",
+        "output_location": "",
+        "output_location_type": "none",
+        "mustacheAltTags": false,
+        "x": 1120,
+        "y": 280,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "b23cd75f.da13",
+        "type": "delay",
+        "z": "553bfbb.b5eaa84",
+        "name": "",
+        "pauseType": "delay",
+        "timeout": "5",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "1",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "x": 1120,
+        "y": 200,
+        "wires": [
+            [
+                "414f21e0.5601a"
+            ]
+        ]
+    },
+    {
+        "id": "e63405fb.40889",
+        "type": "change",
+        "z": "553bfbb.b5eaa84",
+        "name": "open gate",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "open",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 930,
+        "y": 200,
+        "wires": [
+            [
+                "b23cd75f.da13"
+            ]
+        ]
+    },
+    {
+        "id": "1555f232.ea9f8e",
+        "type": "split",
+        "z": "553bfbb.b5eaa84",
+        "name": "",
+        "splt": "\\n",
+        "spltType": "str",
+        "arraySplt": 1,
+        "arraySpltType": "len",
+        "stream": false,
+        "addname": "",
+        "x": 770,
+        "y": 100,
+        "wires": [
+            [
+                "ee90b4aa.b4bd18",
+                "f41f0f7a.fc4eb"
             ]
         ]
     }
