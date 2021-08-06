@@ -1011,7 +1011,7 @@
                 "p": "payload.data.entity_id",
                 "pt": "msg",
                 "from": "kids-bed-room/.*",
-                "fromt": "str",
+                "fromt": "re",
                 "to": "climate.neq1521928",
                 "tot": "str"
             }
