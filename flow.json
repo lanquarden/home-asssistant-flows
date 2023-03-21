@@ -14,6 +14,52 @@
         "info": ""
     },
     {
+        "id": "4aa3e13d.f801b",
+        "type": "tab",
+        "label": "Solar",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "ea8eb34daf89c9a3",
+        "type": "tab",
+        "label": "Energy prices",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "3daecb3a84194248",
+        "type": "tab",
+        "label": "Doorbell",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "449c915c4d2b36cc",
+        "type": "tab",
+        "label": "Flow 1",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "f9f76430cac568e2",
+        "type": "tab",
+        "label": "Flow 2",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "57dc10d1a06c1bd8",
+        "type": "tab",
+        "label": "esios",
+        "disabled": false,
+        "info": ""
+    },
+    {
         "id": "b559dfa2.ecc5b8",
         "type": "server",
         "name": "Home Assistant",
@@ -44,6 +90,86 @@
         "willTopic": "",
         "willQos": "0",
         "willPayload": ""
+    },
+    {
+        "id": "7c9e7be9.c6b294",
+        "type": "modbus-client",
+        "name": "Ingecon Sun 1Play Storage",
+        "clienttype": "tcp",
+        "bufferCommands": true,
+        "stateLogEnabled": false,
+        "queueLogEnabled": false,
+        "tcpHost": "192.168.1.149",
+        "tcpPort": "502",
+        "tcpType": "DEFAULT",
+        "serialPort": "/dev/ttyUSB",
+        "serialType": "RTU-BUFFERD",
+        "serialBaudrate": "9600",
+        "serialDatabits": "8",
+        "serialStopbits": "1",
+        "serialParity": "none",
+        "serialConnectionDelay": "100",
+        "serialAsciiResponseStartDelimiter": "",
+        "unit_id": 1,
+        "commandDelay": 1,
+        "clientTimeout": 1000,
+        "reconnectOnTimeout": true,
+        "reconnectTimeout": 2000,
+        "parallelUnitIdsAllowed": true
+    },
+    {
+        "id": "d8043f74.21d91",
+        "type": "modbus-client",
+        "name": "ingeteam external power meter",
+        "clienttype": "tcp",
+        "bufferCommands": true,
+        "stateLogEnabled": false,
+        "queueLogEnabled": false,
+        "tcpHost": "192.168.1.149",
+        "tcpPort": "503",
+        "tcpType": "DEFAULT",
+        "serialPort": "/dev/ttyUSB",
+        "serialType": "RTU-BUFFERD",
+        "serialBaudrate": "9600",
+        "serialDatabits": "8",
+        "serialStopbits": "1",
+        "serialParity": "none",
+        "serialConnectionDelay": "100",
+        "serialAsciiResponseStartDelimiter": "",
+        "unit_id": "1",
+        "commandDelay": "1",
+        "clientTimeout": "1000",
+        "reconnectOnTimeout": true,
+        "reconnectTimeout": "2000",
+        "parallelUnitIdsAllowed": true
+    },
+    {
+        "id": "636cb567.cfe544",
+        "type": "influxdb",
+        "hostname": "192.168.1.22",
+        "port": "8086",
+        "protocol": "http",
+        "database": "energy",
+        "name": "influxdb@energy",
+        "usetls": false,
+        "tls": "",
+        "influxdbVersion": "1.x",
+        "url": "http://localhost:8086",
+        "rejectUnauthorized": true
+    },
+    {
+        "id": "353f3090.d331c",
+        "type": "influxdb",
+        "hostname": "127.0.0.1",
+        "port": "8086",
+        "protocol": "http",
+        "database": "database",
+        "name": "tests mistborn",
+        "usetls": false,
+        "tls": "",
+        "influxdbVersion": "2.0",
+        "url": "http://10.13.2.15:8086",
+        "rejectUnauthorized": false
     },
     {
         "id": "31755730.26a5f",
@@ -267,7 +393,7 @@
                 "value": ""
             }
         ],
-        "entityid": "climate.(neq1411046|neq1411058|neq1411004|oeq0238491)",
+        "entityid": "climate.(neq1411046|neq1411004|oeq0238491)",
         "entityidfiltertype": "regex",
         "debugenabled": false,
         "constraints": [
@@ -351,22 +477,13 @@
                 "value": ""
             }
         ],
-        "entityid": "climate.(neq1411046|neq1411058|neq1411004|oeq0238491)",
+        "entityid": "climate.(neq1411046|neq1411004|oeq0238491)",
         "entityidfiltertype": "regex",
         "debugenabled": false,
         "constraints": [
             {
                 "targetType": "entity_id",
                 "targetValue": "climate.neq1411046",
-                "propertyType": "property",
-                "comparatorType": "<=",
-                "comparatorValueDatatype": "num",
-                "comparatorValue": "5",
-                "propertyValue": "attributes.valve"
-            },
-            {
-                "targetType": "entity_id",
-                "targetValue": "climate.neq1411058",
                 "propertyType": "property",
                 "comparatorType": "<=",
                 "comparatorValueDatatype": "num",
@@ -918,6 +1035,7 @@
         "qos": "2",
         "datatype": "auto",
         "broker": "d03b4f35.65271",
+        "inputs": 0,
         "x": 240,
         "y": 900,
         "wires": [
@@ -1039,11 +1157,13 @@
         "qos": "2",
         "datatype": "auto",
         "broker": "d03b4f35.65271",
+        "inputs": 0,
         "x": 220,
         "y": 1040,
         "wires": [
             [
-                "1490835.1ccae7d"
+                "1490835.1ccae7d",
+                "a52a5dae.80f418"
             ]
         ]
     },
@@ -1122,18 +1242,18 @@
                 "t": "change",
                 "p": "payload.data.entity_id",
                 "pt": "msg",
-                "from": "master-bed-room/.*",
+                "from": "kids-bed-room/.*",
                 "fromt": "re",
-                "to": "climate.neq1521927",
+                "to": "climate.neq1521928",
                 "tot": "str"
             },
             {
                 "t": "change",
                 "p": "payload.data.entity_id",
                 "pt": "msg",
-                "from": "kids-bed-room/.*",
-                "fromt": "str",
-                "to": "climate.neq1521928",
+                "from": "master-bed-room/.*",
+                "fromt": "re",
+                "to": "climate.neq1521927",
                 "tot": "str"
             }
         ],
@@ -1150,6 +1270,22 @@
                 "aff5357f.3d481"
             ]
         ]
+    },
+    {
+        "id": "a52a5dae.80f418",
+        "type": "debug",
+        "z": "c1aba6ca.ae591",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 420,
+        "y": 1160,
+        "wires": []
     },
     {
         "id": "694b867b.20adc8",
@@ -1327,6 +1463,7 @@
         "randomLast": "5",
         "randomUnits": "seconds",
         "drop": false,
+        "outputs": 1,
         "x": 420,
         "y": 240,
         "wires": [
@@ -1420,6 +1557,7 @@
         "randomLast": "5",
         "randomUnits": "seconds",
         "drop": false,
+        "outputs": 1,
         "x": 1120,
         "y": 200,
         "wires": [
@@ -1474,5 +1612,2849 @@
                 "f41f0f7a.fc4eb"
             ]
         ]
+    },
+    {
+        "id": "5298883b.63d67",
+        "type": "modbus-read",
+        "z": "4aa3e13d.f801b",
+        "name": "Ingeteam IRs",
+        "topic": "",
+        "showStatusActivities": true,
+        "logIOActivities": false,
+        "showErrors": true,
+        "unitid": "1",
+        "dataType": "InputRegister",
+        "adr": "6",
+        "quantity": "67",
+        "rate": "2",
+        "rateUnit": "s",
+        "delayOnStart": false,
+        "startDelayTime": "",
+        "server": "7c9e7be9.c6b294",
+        "useIOFile": false,
+        "ioFile": "",
+        "useIOForPayload": false,
+        "emptyMsgOnFail": true,
+        "x": 170,
+        "y": 160,
+        "wires": [
+            [
+                "4e8faafc.742a84"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "f8b8031b.ad32a",
+        "type": "inject",
+        "z": "4aa3e13d.f801b",
+        "name": "Get...",
+        "props": [],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payloadType": "str",
+        "x": 150,
+        "y": 660,
+        "wires": [
+            [
+                "10fadcf5.b235ab"
+            ]
+        ]
+    },
+    {
+        "id": "10fadcf5.b235ab",
+        "type": "http request",
+        "z": "4aa3e13d.f801b",
+        "name": "inverter map",
+        "method": "GET",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "http://192.168.1.149/inverter/map/1",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "authType": "basic",
+        "senderr": false,
+        "x": 330,
+        "y": 660,
+        "wires": [
+            [
+                "4fe27c30.272404"
+            ]
+        ]
+    },
+    {
+        "id": "74cee61b.a09b9",
+        "type": "debug",
+        "z": "4aa3e13d.f801b",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 770,
+        "y": 660,
+        "wires": []
+    },
+    {
+        "id": "dcc296d3.836a08",
+        "type": "inject",
+        "z": "4aa3e13d.f801b",
+        "name": "Get...",
+        "props": [],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "x": 150,
+        "y": 720,
+        "wires": [
+            [
+                "c300bc5c.551258"
+            ]
+        ]
+    },
+    {
+        "id": "c300bc5c.551258",
+        "type": "http request",
+        "z": "4aa3e13d.f801b",
+        "name": "inverter devices",
+        "method": "GET",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "http://192.168.1.149/plant/devices",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "authType": "basic",
+        "senderr": false,
+        "x": 340,
+        "y": 720,
+        "wires": [
+            [
+                "4e105c4f.6157b4"
+            ]
+        ]
+    },
+    {
+        "id": "4e105c4f.6157b4",
+        "type": "debug",
+        "z": "4aa3e13d.f801b",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 550,
+        "y": 720,
+        "wires": []
+    },
+    {
+        "id": "76b1ded7.ae15b",
+        "type": "inject",
+        "z": "4aa3e13d.f801b",
+        "name": "Get...",
+        "props": [],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "x": 150,
+        "y": 780,
+        "wires": [
+            [
+                "a2a5e90a.1db0a"
+            ]
+        ]
+    },
+    {
+        "id": "a2a5e90a.1db0a",
+        "type": "http request",
+        "z": "4aa3e13d.f801b",
+        "name": "plants",
+        "method": "GET",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "http://192.168.1.149/ingecloud/monitorv2/devices/myself/plants",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "authType": "basic",
+        "senderr": false,
+        "x": 310,
+        "y": 780,
+        "wires": [
+            [
+                "9dec26c9.2719f"
+            ]
+        ]
+    },
+    {
+        "id": "9dec26c9.2719f",
+        "type": "debug",
+        "z": "4aa3e13d.f801b",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 550,
+        "y": 780,
+        "wires": []
+    },
+    {
+        "id": "2b45d243.09400e",
+        "type": "comment",
+        "z": "4aa3e13d.f801b",
+        "name": "REST API inverter",
+        "info": "",
+        "x": 170,
+        "y": 580,
+        "wires": []
+    },
+    {
+        "id": "b980633f.6e13c",
+        "type": "inject",
+        "z": "4aa3e13d.f801b",
+        "name": "Get...",
+        "props": [],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "x": 150,
+        "y": 840,
+        "wires": [
+            [
+                "22c2340d.0ba29c"
+            ]
+        ]
+    },
+    {
+        "id": "b6cba319.11da18",
+        "type": "http request",
+        "z": "4aa3e13d.f801b",
+        "name": "historic samples",
+        "method": "GET",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "http://ingeteam.casa/ems/datalogger/samples/{{{date}}}/3",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "authType": "basic",
+        "x": 460,
+        "y": 840,
+        "wires": [
+            [
+                "6cc87d64.4faf0c"
+            ]
+        ]
+    },
+    {
+        "id": "5fbeda25.db0a34",
+        "type": "debug",
+        "z": "4aa3e13d.f801b",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 850,
+        "y": 840,
+        "wires": []
+    },
+    {
+        "id": "6cc87d64.4faf0c",
+        "type": "change",
+        "z": "4aa3e13d.f801b",
+        "name": "extract phase 1",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "payload.resend[Phase = 1]",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 660,
+        "y": 840,
+        "wires": [
+            [
+                "5fbeda25.db0a34"
+            ]
+        ]
+    },
+    {
+        "id": "4fe27c30.272404",
+        "type": "change",
+        "z": "4aa3e13d.f801b",
+        "name": "massage messages",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "payload.(\t    $texts := langs.ENGLISH;\t    $types := customtypes;\t{\t    \"online\": online.{\t        \"dir\": add,\t        \"tid\": tid,\t        \"name\": $lookup($texts, tid),\t        \"convert\": of,\t        \"unit\": $lookup($texts, m),\t        \"btype\": ty,\t        \"tdesc\": $lookup($types, ty)\t        }^(dir),\t    \"holding\": holding.{\t        \"dir\": add,\t        \"tid\": tid,\t        \"name\": $lookup($texts, tid),\t        \"cat\": cat,\t        \"max\": max,\t        \"min\": min,\t        \"start\": start,\t        \"len\": len,\t        \"btype\": ty,\t        \"tdesc\": $lookup($types, ty)\t        }^(dir,start),\t    \"commands\": commands,\t    \"data\": data.{\t        \"dir\": add,\t        \"tid\": tid,\t        \"name\": $lookup($texts, tid),\t        \"convert\": of,\t        \"cat\": cat,\t        \"type\": ty,\t        \"tdesc\": $lookup($types, ty)\t        }^(dir),\t    \"properties\": properties\t}) ~> | *.tdesc.values | $merge($each($, function($v, $k) {{$k: $lookup($$.payload.langs.ENGLISH, $v)}})) |\t",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 560,
+        "y": 660,
+        "wires": [
+            [
+                "74cee61b.a09b9"
+            ]
+        ]
+    },
+    {
+        "id": "c5e867c2.87e408",
+        "type": "comment",
+        "z": "4aa3e13d.f801b",
+        "name": "Error handling",
+        "info": "",
+        "x": 170,
+        "y": 980,
+        "wires": []
+    },
+    {
+        "id": "4f6d2ffd.2b9cc8",
+        "type": "catch",
+        "z": "4aa3e13d.f801b",
+        "name": "",
+        "scope": null,
+        "uncaught": false,
+        "x": 160,
+        "y": 1060,
+        "wires": [
+            [
+                "e6adcec5.8498f8"
+            ]
+        ]
+    },
+    {
+        "id": "e6adcec5.8498f8",
+        "type": "debug",
+        "z": "4aa3e13d.f801b",
+        "name": "Errors",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 390,
+        "y": 1060,
+        "wires": []
+    },
+    {
+        "id": "4e8faafc.742a84",
+        "type": "buffer-parser",
+        "z": "4aa3e13d.f801b",
+        "name": "parse Ingeteam",
+        "data": "responseBuffer.buffer",
+        "dataType": "msg",
+        "specification": "spec",
+        "specificationType": "ui",
+        "items": [
+            {
+                "type": "uint32be",
+                "name": "total_operation",
+                "offset": 0,
+                "length": 1,
+                "offsetbit": 0,
+                "scale": "1",
+                "mask": ""
+            },
+            {
+                "type": "uint16be",
+                "name": "web_interface_bits",
+                "offset": 4,
+                "length": 1,
+                "offsetbit": 0,
+                "scale": "1",
+                "mask": ""
+            },
+            {
+                "type": "uint16be",
+                "name": "stop_event",
+                "offset": 6,
+                "length": 1,
+                "offsetbit": 0,
+                "scale": "1",
+                "mask": ""
+            },
+            {
+                "type": "uint32be",
+                "name": "alarms",
+                "offset": 8,
+                "length": 1,
+                "offsetbit": 0,
+                "scale": "1",
+                "mask": ""
+            },
+            {
+                "type": "uint16be",
+                "name": "code1",
+                "offset": 12,
+                "length": 1,
+                "offsetbit": 0,
+                "scale": "1",
+                "mask": ""
+            },
+            {
+                "type": "uint16be",
+                "name": "code2",
+                "offset": 14,
+                "length": 1,
+                "offsetbit": 0,
+                "scale": "1",
+                "mask": ""
+            },
+            {
+                "type": "uint16be",
+                "name": "code3",
+                "offset": 16,
+                "length": 1,
+                "offsetbit": 0,
+                "scale": "1",
+                "mask": ""
+            },
+            {
+                "type": "uint16be",
+                "name": "inverter_status",
+                "offset": 18,
+                "length": 1,
+                "offsetbit": 0,
+                "scale": "1",
+                "mask": ""
+            },
+            {
+                "type": "uint16be",
+                "name": "grid_conn_wait",
+                "offset": 20,
+                "length": 1,
+                "offsetbit": 0,
+                "scale": "1",
+                "mask": ""
+            },
+            {
+                "type": "int16be",
+                "name": "battery_voltage",
+                "offset": 22,
+                "length": 1,
+                "offsetbit": 0,
+                "scale": "/10",
+                "mask": ""
+            },
+            {
+                "type": "int16be",
+                "name": "battery_current",
+                "offset": 24,
+                "length": 1,
+                "offsetbit": 0,
+                "scale": "/100",
+                "mask": ""
+            },
+            {
+                "type": "int16be",
+                "name": "battery_power",
+                "offset": 26,
+                "length": 1,
+                "offsetbit": 0,
+                "scale": "1",
+                "mask": ""
+            },
+            {
+                "type": "uint16be",
+                "name": "battery_soc",
+                "offset": 28,
+                "length": 1,
+                "offsetbit": 0,
+                "scale": "1",
+                "mask": ""
+            },
+            {
+                "type": "uint16be",
+                "name": "battery_soh",
+                "offset": 30,
+                "length": 1,
+                "offsetbit": 0,
+                "scale": "1",
+                "mask": ""
+            },
+            {
+                "type": "int16be",
+                "name": "battery_chg_voltage",
+                "offset": 32,
+                "length": 1,
+                "offsetbit": 0,
+                "scale": "/10",
+                "mask": ""
+            },
+            {
+                "type": "int16be",
+                "name": "battery_dchg_voltage",
+                "offset": 34,
+                "length": 1,
+                "offsetbit": 0,
+                "scale": "/10",
+                "mask": ""
+            },
+            {
+                "type": "int16be",
+                "name": "battery_max_chg_current",
+                "offset": 36,
+                "length": 1,
+                "offsetbit": 0,
+                "scale": "1",
+                "mask": ""
+            },
+            {
+                "type": "int16be",
+                "name": "battery_max_dchg_current",
+                "offset": 38,
+                "length": 1,
+                "offsetbit": 0,
+                "scale": "1",
+                "mask": ""
+            },
+            {
+                "type": "uint16be",
+                "name": "battery_status",
+                "offset": 40,
+                "length": 1,
+                "offsetbit": 0,
+                "scale": "1",
+                "mask": ""
+            },
+            {
+                "type": "int16be",
+                "name": "battery_temp",
+                "offset": 42,
+                "length": 1,
+                "offsetbit": 0,
+                "scale": "1",
+                "mask": ""
+            },
+            {
+                "type": "uint16be",
+                "name": "battery_bms_alarms",
+                "offset": 44,
+                "length": 1,
+                "offsetbit": 0,
+                "scale": "1",
+                "mask": ""
+            },
+            {
+                "type": "uint16be",
+                "name": "battery_power_reduction_reason",
+                "offset": 46,
+                "length": 1,
+                "offsetbit": 0,
+                "scale": "1",
+                "mask": ""
+            },
+            {
+                "type": "int16be",
+                "name": "battery_voltage_inverter_sensor",
+                "offset": 48,
+                "length": 1,
+                "offsetbit": 0,
+                "scale": "/10",
+                "mask": ""
+            },
+            {
+                "type": "uint16be",
+                "name": "pv1_voltage",
+                "offset": 50,
+                "length": 1,
+                "offsetbit": 0,
+                "scale": "1",
+                "mask": ""
+            },
+            {
+                "type": "int16be",
+                "name": "pv1_current",
+                "offset": 52,
+                "length": 1,
+                "offsetbit": 0,
+                "scale": "/100",
+                "mask": ""
+            },
+            {
+                "type": "uint16be",
+                "name": "pv1_power",
+                "offset": 54,
+                "length": 1,
+                "offsetbit": 0,
+                "scale": "1",
+                "mask": ""
+            },
+            {
+                "type": "uint16be",
+                "name": "pv2_voltage",
+                "offset": 56,
+                "length": 1,
+                "offsetbit": 0,
+                "scale": "1",
+                "mask": ""
+            },
+            {
+                "type": "int16be",
+                "name": "pv2_current",
+                "offset": 58,
+                "length": 1,
+                "offsetbit": 0,
+                "scale": "/100",
+                "mask": ""
+            },
+            {
+                "type": "uint16be",
+                "name": "pv2_power",
+                "offset": 60,
+                "length": 1,
+                "offsetbit": 0,
+                "scale": "1",
+                "mask": ""
+            },
+            {
+                "type": "int16be",
+                "name": "inverter_active_power",
+                "offset": 62,
+                "length": 1,
+                "offsetbit": 0,
+                "scale": "1",
+                "mask": ""
+            },
+            {
+                "type": "int16be",
+                "name": "inverter_reactive_power",
+                "offset": 64,
+                "length": 1,
+                "offsetbit": 0,
+                "scale": "1",
+                "mask": ""
+            },
+            {
+                "type": "int16be",
+                "name": "inverter_cosphi",
+                "offset": 66,
+                "length": 1,
+                "offsetbit": 0,
+                "scale": "/1000",
+                "mask": ""
+            },
+            {
+                "type": "int16be",
+                "name": "active_power_reduction_ratio",
+                "offset": 68,
+                "length": 1,
+                "offsetbit": 0,
+                "scale": "/10",
+                "mask": ""
+            },
+            {
+                "type": "uint16be",
+                "name": "active_power_reduction_reason",
+                "offset": 70,
+                "length": 1,
+                "offsetbit": 0,
+                "scale": "1",
+                "mask": ""
+            },
+            {
+                "type": "uint16be",
+                "name": "reactive_power_setpoint_type",
+                "offset": 72,
+                "length": 1,
+                "offsetbit": 0,
+                "scale": "1",
+                "mask": ""
+            },
+            {
+                "type": "uint16be",
+                "name": "critical_loads_voltage",
+                "offset": 74,
+                "length": 1,
+                "offsetbit": 0,
+                "scale": "1",
+                "mask": ""
+            },
+            {
+                "type": "int16be",
+                "name": "critical_loads_current",
+                "offset": 76,
+                "length": 1,
+                "offsetbit": 0,
+                "scale": "/100",
+                "mask": ""
+            },
+            {
+                "type": "int16be",
+                "name": "critical_loads_frequency",
+                "offset": 78,
+                "length": 1,
+                "offsetbit": 0,
+                "scale": "/100",
+                "mask": ""
+            },
+            {
+                "type": "int16be",
+                "name": "critical_loads_active_power",
+                "offset": 80,
+                "length": 1,
+                "offsetbit": 0,
+                "scale": "1",
+                "mask": ""
+            },
+            {
+                "type": "int16be",
+                "name": "critical_loads_reactive_power",
+                "offset": 82,
+                "length": 1,
+                "offsetbit": 0,
+                "scale": "1",
+                "mask": ""
+            },
+            {
+                "type": "uint16be",
+                "name": "internal_wattmeter_grid_voltage",
+                "offset": 84,
+                "length": 1,
+                "offsetbit": 0,
+                "scale": "1",
+                "mask": ""
+            },
+            {
+                "type": "int16be",
+                "name": "internal_wattmeter_grid_current",
+                "offset": 86,
+                "length": 1,
+                "offsetbit": 0,
+                "scale": "/100",
+                "mask": ""
+            },
+            {
+                "type": "int16be",
+                "name": "internal_wattmeter_grid_frequency",
+                "offset": 88,
+                "length": 1,
+                "offsetbit": 0,
+                "scale": "/100",
+                "mask": ""
+            },
+            {
+                "type": "int16be",
+                "name": "internal_wattmeter_grid_active_power",
+                "offset": 90,
+                "length": 1,
+                "offsetbit": 0,
+                "scale": "1",
+                "mask": ""
+            },
+            {
+                "type": "int16be",
+                "name": "internal_wattmeter_grid_gap",
+                "offset": 92,
+                "length": 1,
+                "offsetbit": 0,
+                "scale": "1",
+                "mask": ""
+            },
+            {
+                "type": "int16be",
+                "name": "internal_wattmeter_grid_cosphi",
+                "offset": 94,
+                "length": 1,
+                "offsetbit": 0,
+                "scale": "/1000",
+                "mask": ""
+            },
+            {
+                "type": "uint16be",
+                "name": "dc_bus_voltage",
+                "offset": 96,
+                "length": 1,
+                "offsetbit": 0,
+                "scale": "1",
+                "mask": ""
+            },
+            {
+                "type": "int16be",
+                "name": "temperature_module_battery",
+                "offset": 98,
+                "length": 1,
+                "offsetbit": 0,
+                "scale": "/10",
+                "mask": ""
+            },
+            {
+                "type": "int16be",
+                "name": "temperature_module_phpv",
+                "offset": 100,
+                "length": 1,
+                "offsetbit": 0,
+                "scale": "/10",
+                "mask": ""
+            },
+            {
+                "type": "int16be",
+                "name": "temperature_pcb",
+                "offset": 102,
+                "length": 1,
+                "offsetbit": 0,
+                "scale": "/10",
+                "mask": ""
+            },
+            {
+                "type": "uint16be",
+                "name": "temperature_pt100",
+                "offset": 104,
+                "length": 1,
+                "offsetbit": 0,
+                "scale": "1",
+                "mask": ""
+            },
+            {
+                "type": "uint16be",
+                "name": "positive_isolation_resistance",
+                "offset": 106,
+                "length": 1,
+                "offsetbit": 0,
+                "scale": "1",
+                "mask": ""
+            },
+            {
+                "type": "uint16be",
+                "name": "negative_isolation_resistance",
+                "offset": 108,
+                "length": 1,
+                "offsetbit": 0,
+                "scale": "1",
+                "mask": ""
+            },
+            {
+                "type": "uint16be",
+                "name": "rms_differential_current",
+                "offset": 110,
+                "length": 1,
+                "offsetbit": 0,
+                "scale": "1",
+                "mask": ""
+            },
+            {
+                "type": "uint16be",
+                "name": "digital_output1_status",
+                "offset": 112,
+                "length": 1,
+                "offsetbit": 0,
+                "scale": "1",
+                "mask": ""
+            },
+            {
+                "type": "uint16be",
+                "name": "digital_output2_status",
+                "offset": 114,
+                "length": 1,
+                "offsetbit": 0,
+                "scale": "1",
+                "mask": ""
+            },
+            {
+                "type": "uint16be",
+                "name": "digital_input_drm0_status",
+                "offset": 116,
+                "length": 1,
+                "offsetbit": 0,
+                "scale": "1",
+                "mask": ""
+            },
+            {
+                "type": "uint16be",
+                "name": "digital_input2_status",
+                "offset": 118,
+                "length": 1,
+                "offsetbit": 0,
+                "scale": "1",
+                "mask": ""
+            },
+            {
+                "type": "uint16be",
+                "name": "digital_input3_status",
+                "offset": 120,
+                "length": 1,
+                "offsetbit": 0,
+                "scale": "1",
+                "mask": ""
+            },
+            {
+                "type": "uint16be",
+                "name": "hardware_version",
+                "offset": 122,
+                "length": 1,
+                "offsetbit": 0,
+                "scale": "1",
+                "mask": ""
+            },
+            {
+                "type": "uint16be",
+                "name": "battery_bms_flags",
+                "offset": 124,
+                "length": 1,
+                "offsetbit": 0,
+                "scale": "1",
+                "mask": ""
+            },
+            {
+                "type": "uint16be",
+                "name": "external_watt_meter_grid_voltage",
+                "offset": 126,
+                "length": 1,
+                "offsetbit": 0,
+                "scale": "1",
+                "mask": ""
+            },
+            {
+                "type": "uint16be",
+                "name": "external_watt_meter_grid_frequency",
+                "offset": 128,
+                "length": 1,
+                "offsetbit": 0,
+                "scale": "/10",
+                "mask": ""
+            },
+            {
+                "type": "int16be",
+                "name": "external_watt_meter_grid_active_power",
+                "offset": 130,
+                "length": 1,
+                "offsetbit": 0,
+                "scale": "1",
+                "mask": ""
+            },
+            {
+                "type": "int16be",
+                "name": "external_watt_meter_grid_reactive_power",
+                "offset": 132,
+                "length": 1,
+                "offsetbit": 0,
+                "scale": "1",
+                "mask": ""
+            }
+        ],
+        "swap1": "",
+        "swap2": "",
+        "swap3": "",
+        "swap1Type": "swap",
+        "swap2Type": "swap",
+        "swap3Type": "swap",
+        "msgProperty": "payload",
+        "msgPropertyType": "str",
+        "resultType": "keyvalue",
+        "resultTypeType": "output",
+        "multipleResult": false,
+        "fanOutMultipleResult": false,
+        "setTopic": true,
+        "outputs": 1,
+        "x": 380,
+        "y": 160,
+        "wires": [
+            [
+                "307db9a5.2db70e"
+            ]
+        ]
+    },
+    {
+        "id": "4c53df23.db3fb",
+        "type": "debug",
+        "z": "4aa3e13d.f801b",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1230,
+        "y": 40,
+        "wires": []
+    },
+    {
+        "id": "307db9a5.2db70e",
+        "type": "function",
+        "z": "4aa3e13d.f801b",
+        "name": "scale and interpret",
+        "func": "let payload=msg.payload;\n\nlet if_bits = [];\n\nif(1<<0 & payload.web_interface_bits) if_bits.push(\"Green Led Blinking\");\nif(1<<1 & payload.web_interface_bits) if_bits.push(\"Green Led On\");\nif(1<<10 & payload.web_interface_bits) if_bits.push(\"Grid/Genset Icon Active\");\nif(1<<11 & payload.web_interface_bits) if_bits.push(\"Battery Icon Active\");\nif(1<<12 & payload.web_interface_bits) if_bits.push(\"Inverter Icon Active\");\nif(1<<13 & payload.web_interface_bits) if_bits.push(\"Autotest menu Enabled\");\nif(1<<14 & payload.web_interface_bits) if_bits.push(\"Critical Loads configured\");\nif(1<<5 & payload.web_interface_bits) if_bits.push(\"Red Led On\");\nif(1<<8 & payload.web_interface_bits) if_bits.push(\"Fan Test Running\");\nif(1<<9 & payload.web_interface_bits) if_bits.push(\"Fan Test Ended\");\nmsg.payload.web_intetface_bits_str = if_bits.join(', ');\n\nlet stop_evt;\nswitch(payload.stop_event){\n    case 0:\n        stop_evt = \"0\";\n        break;\n    case 1:\n        stop_evt = \"1 - Low Battery SOC or Voltage\";\n        break;\n    case 10:\n        stop_evt = \"10 - Inverter stopped manually\";\n        break;\n    case 11:\n        stop_evt = \"11 - Overdischarge in Battery\";\n        break;\n    case 12:\n        stop_evt = \"12 - Overload in Critical Loads\";\n        break;\n    case 13:\n        stop_evt = \"13 - Short circuit in Critical Loads\";\n        break;\n    case 14:\n        stop_evt = \"14 - Low PV Power\";\n        break;\n    case 15:\n        stop_evt = \"15 - AC Relays Test\";\n        break;\n    case 16:\n        stop_evt = \"16 - Low Inverter Temperature\";\n        break;\n    case 17:\n        stop_evt = \"17 - High Inverter Temperature\";\n        break;\n    case 18:\n        stop_evt = \"18 - Incremental differential current\";\n        break;\n    case 19:\n        stop_evt = \"19 - RMS Differential current\";\n        break;\n    case 2:\n        stop_evt = \"2 - High Battery Voltage\";\n        break;\n    case 20:\n        stop_evt = \"20 - Instantaneous differential current\";\n        break;\n    case 21:\n        stop_evt = \"21 - Insulation Failure\";\n        break;\n    case 22:\n        stop_evt = \"22 - High PV current\";\n        break;\n    case 23:\n        stop_evt = \"23 - DC/DC or AC/DC Error\";\n        break;\n    case 24:\n        stop_evt = \"24 - ADC Error\";\n        break;\n    case 25:\n        stop_evt = \"25 - Configuration change\";\n        break;\n    case 26:\n        stop_evt = \"26 - Reserved\";\n        break;\n    case 27:\n        stop_evt = \"27 - Wrong type of battery\";\n        break;\n    case 28:\n        stop_evt = \"28 - ADC Error\";\n        break;\n    case 29:\n        stop_evt = \"29 - Reset Watchdog\";\n        break;\n    case 3:\n        stop_evt = \"3 - Communication Error with BMS\";\n        break;\n    case 30:\n        stop_evt = \"30 - Alarm in BMS\";\n        break;\n    case 4:\n        stop_evt = \"4 - Inverter stopped from Digital Input\";\n        break;\n    case 5:\n        stop_evt = \"5 - Grid Voltage or Frequency out of range\";\n        break;\n    case 6:\n        stop_evt = \"6 - DC Bus or PV input Overvoltage\";\n        break;\n    case 7:\n        stop_evt = \"7 - DC/AC Fault\";\n        break;\n    case 8:\n        stop_evt = \"8 - DC/DC Fault\";\n        break;\n    case 9:\n        stop_evt = \"9 - HW Battery Overcurrent\";\n        break;\n    default:\n        stop_evt = \"Unknown event\";\n}\nmsg.payload.stop_event_str = stop_evt;\n\n\nlet alarms = [];\nif(1<<0 & payload.alarms) alarms.push(\"Battery voltage out of range\");\nif(1<<1 & payload.alarms) alarms.push(\"Grid frequency out of range\");\nif(1<<10 & payload.alarms) alarms.push(\"Inverter stopped\");\nif(1<<11 & payload.alarms) alarms.push(\"Hardware failure\");\nif(1<<12 & payload.alarms) alarms.push(\"DC/DC or AC/DC Converter Error\");\nif(1<<14 & payload.alarms) alarms.push(\"Battery Temperature out of range\");\nif(1<<15 & payload.alarms) alarms.push(\"Overload capacity exceeded in Battery\");\nif(1<<16 & payload.alarms) alarms.push(\"Overload capacity exceeded in Critical Loads\");\nif(1<<17 & payload.alarms) alarms.push(\"Short circuit in Critical Loads\");\nif(1<<18 & payload.alarms) alarms.push(\"PT100 sensor failure\");\nif(1<<19 & payload.alarms) alarms.push(\"Communication Error with BMS\");\nif(1<<2 & payload.alarms) alarms.push(\"Grid voltage out of range\");\nif(1<<20 & payload.alarms) alarms.push(\"Wrong inverter serial number\");\nif(1<<21 & payload.alarms) alarms.push(\"High grid voltage\");\nif(1<<22 & payload.alarms) alarms.push(\"Wrong type of battery configuration\");\nif(1<<23 & payload.alarms) alarms.push(\"Alarm in the BMS\");\nif(1<<24 & payload.alarms) alarms.push(\"Overcurrent in PV 1 array input\");\nif(1<<25 & payload.alarms) alarms.push(\"Overcurrent in PV 2 array input\");\nif(1<<26 & payload.alarms) alarms.push(\"Full Battery Discharge\");\nif(1<<3 & payload.alarms) alarms.push(\"DC/AC Inverter overcurrent or fault\");\nif(1<<4 & payload.alarms) alarms.push(\"DC/DC Battery overcurrent or fault\");\nif(1<<5 & payload.alarms) alarms.push(\"Insulation failure\");\nif(1<<6 & payload.alarms) alarms.push(\"Wrong wired in the installation\");\nif(1<<7 & payload.alarms) alarms.push(\"Inverter temperature out of range\");\nif(1<<8 & payload.alarms) alarms.push(\"DC Bus overvoltage\");\nif(1<<9 & payload.alarms) alarms.push(\"Configuration change\");\nmsg.payload.alarms_str = alarms.join(', ');\n\nlet code1 = [];\nif(1<<1 & payload.code1) code1.push(\"Grid Current Sensor out of full scale range\");\nif(1<<10 & payload.code1) code1.push(\"RMS Differential Current failure\");\nif(1<<11 & payload.code1) code1.push(\"Incremental differential current failure\");\nif(1<<12 & payload.code1) code1.push(\"Instantaneous differential current failure\");\nif(1<<13 & payload.code1) code1.push(\"Inverter stopped manually\");\nif(1<<2 & payload.code1) code1.push(\"Insulation Failure in PV or Battery terminals\");\nif(1<<3 & payload.code1) code1.push(\"Warning: Internal fan blocked\");\nif(1<<4 & payload.code1) code1.push(\"Warning: External fan blocked\");\nif(1<<5 & payload.code1) code1.push(\"Battery Current Sensor out of full scale range\");\nif(1<<6 & payload.code1) code1.push(\"Compensation of DC offset failed\");\nif(1<<7 & payload.code1) code1.push(\"Grid Voltage Sensor out of full scale range\");\nif(1<<8 & payload.code1) code1.push(\"Avg. Differential Current out of full scale range\");\nif(1<<9 & payload.code1) code1.push(\"Inst. Differential Current out of full scale range\");\nmsg.payload.code1_str = code1.join(', ');\n\nlet code2 = [];\nif(1<<0 & payload.code2) code2.push(\"Warning: High Temperature\");\nif(1<<1 & payload.code2) code2.push(\"AC Voltage in Critical Loads Output\");\nif(1<<10 & payload.code2) code2.push(\"Maximum Critical Loads Power in Off-Grid\");\nif(1<<11 & payload.code2) code2.push(\"Low Critical Loads Voltage in Off-Grid\");\nif(1<<12 & payload.code2) code2.push(\"Maximum Critical Loads Power in On-Grid\");\nif(1<<13 & payload.code2) code2.push(\"Alarm in the BMS\");\nif(1<<14 & payload.code2) code2.push(\"Internal Differential Current test failed\");\nif(1<<15 & payload.code2) code2.push(\"Inverter stopped by the Digital Input\");\nif(1<<2 & payload.code2) code2.push(\"Low PV power to start up the inverter\");\nif(1<<3 & payload.code2) code2.push(\"Grid Frequency out of the configured limits\");\nif(1<<4 & payload.code2) code2.push(\"Warning: Compensation of DC offset\");\nif(1<<5 & payload.code2) code2.push(\"Internal AC relay test failed\");\nif(1<<6 & payload.code2) code2.push(\"Grid Voltage out of the configured limits\");\nif(1<<7 & payload.code2) code2.push(\"Low Battery Voltage\");\nif(1<<8 & payload.code2) code2.push(\"High Battery Voltage\");\nif(1<<9 & payload.code2) code2.push(\"Communication Error with BMS\");\nmsg.payload.code2_str = code2.join(', ');\n\n\nlet code3 = [];\nif(1<<0 & payload.code3) code3.push(\"PT100 disconnected or shortcircuited\");\nif(1<<1 & payload.code3) code3.push(\"High Battery Temperature\");\nif(1<<2 & payload.code3) code3.push(\"Warning: DC/DC Battery cannot operate\");\nif(1<<3 & payload.code3) code3.push(\"Warning: Synchronization with the grid not successful\");\nif(1<<4 & payload.code3) code3.push(\"Warning: Transient failure detection in the Grid\");\nif(1<<5 & payload.code3) code3.push(\"Warning: DC/DC PV input 1 cannot operate\");\nif(1<<6 & payload.code3) code3.push(\"Battery SOC lower than configured SOC Descx\");\nif(1<<7 & payload.code3) code3.push(\"Warning: DC/DC PV input 2 cannot operate\");\nif(1<<8 & payload.code3) code3.push(\"Warning: Date not synchronized\");\nif(1<<9 & payload.code3) code3.push(\"Warning: RTC CR2032 battery exhausted\");\nmsg.payload.code3_str = code3.join(', ');\n\n\nlet status;\nswitch(payload.inverter_status){\n    case 0:\n        status = \"Stopped\";\n        break;\n    case 1:\n        status = \"Starting\";\n        break;\n    case 2:\n        status = \"Off-Grid\";\n        break;\n    case 3:\n        status = \"On-Grid\";\n        break;\n    case 4:\n        status = \"On-Grid\";\n        break;\n    case 5:\n        status = \"Waiting to connect to Grid\";\n        break;\n    case 6:\n        status = \"Bypass AC activated\";\n        break;\n    case 7:\n        status = \"Emergency Charge from PV\";\n        break;\n    case 8:\n        status = \"Emergency Charge from Grid\";\n        break;\n    case 9:\n        status = \"Locked waiting for Reset\";\n        break;\n    case 10:\n        status = \"Error\";\n        break;\n    case 11:\n        status = \"Off-Grid in AC Grid\";\n        break;\n    default:\n        status = \"Unknown status\";\n}\nmsg.payload.inverter_status_str = status;\n\nlet bat_status;\nswitch(payload.battery_status){\n    \n    case 00:\n        bat_status = \"Standby\";\n        break;\n    case 01:\n        bat_status = \"Discharging\";\n        break;\n    case 02:\n        bat_status = \"Charging\";\n        break;\n    case 03:\n        bat_status = \"Constant Voltage\";\n        break;\n    case 04:\n        bat_status = \"Flotation\";\n        break;\n    case 05:\n        bat_status = \"Equalization\";\n        break;\n    case 06:\n        bat_status = \"Error with BMS\";\n        break;\n    case 07:\n        bat_status = \"No Configured\";\n        break;\n    case 08:\n        bat_status = \"Calibration - Charging\";\n        break;\n    case 09:\n        bat_status = \"Calibration - Discharging\";\n        break;\n    default:\n        bat_status = \"Unknown status\";\n}\nmsg.payload.battery_status_str = bat_status;\n\nlet bat_bms_alarms = [];\n\nif(1<<0 & payload.battery_bms_alarms) bat_bms_alarms.push(\"High Current during Charge\");\nif(1<<1 & payload.battery_bms_alarms) bat_bms_alarms.push(\"High Voltage\");\nif(1<<2 & payload.battery_bms_alarms) bat_bms_alarms.push(\"Low Voltage\");\nif(1<<3 & payload.battery_bms_alarms) bat_bms_alarms.push(\"High Temperature\");\nif(1<<4 & payload.battery_bms_alarms) bat_bms_alarms.push(\"Low Temperature\");\nif(1<<5 & payload.battery_bms_alarms) bat_bms_alarms.push(\"Internal BMS Alarm\");\nif(1<<6 & payload.battery_bms_alarms) bat_bms_alarms.push(\"Cell Imbalance\");\nif(1<<7 & payload.battery_bms_alarms) bat_bms_alarms.push(\"High Current during discharge\");\nif(1<<8 & payload.battery_bms_alarms) bat_bms_alarms.push(\"System Error\");\nmsg.payload.battery_bms_alarms_str = bat_bms_alarms.join(', ');\n\nlet bat_pwr_red_reason;\nswitch(payload.battery_power_reduction_reason){\n\n    case 00:\n        bat_pwr_red_reason = \"No Limitation\";\n        break;\n    case 01:\n        bat_pwr_red_reason = \"Heat Sink Temperature\";\n        break;\n    case 02:\n        bat_pwr_red_reason = \"PT100 Temperature\";\n        break;\n    case 03:\n        bat_pwr_red_reason = \"Low Bus Voltage Protection\";\n        break;\n    case 04:\n        bat_pwr_red_reason = \"Lead-acid Settings\";\n        break;\n    case 05:\n        bat_pwr_red_reason = \"BMS Communication\";\n        break;\n    case 06:\n        bat_pwr_red_reason = \"SOC Max Configured\";\n        break;\n    case 07:\n        bat_pwr_red_reason = \"SOC Min Configured\";\n        break;\n    case 08:\n        bat_pwr_red_reason = \"Maximum Battery Power\";\n        break;\n    case 09:\n        bat_pwr_red_reason = \"High Battery Voltage Protection\";\n        break;\n    default:\n        bat_pwr_red_reason = \"Unknown reason\";\n}\nmsg.payload.battery_power_reduction_reason_str = bat_pwr_red_reason;\n\nlet ac_pow_red_reason;\nswitch(payload.active_power_reduction_reason){\n\n    case 00:\n        ac_pow_red_reason = \"No Limitation\";\n        break;\n    case 01:\n        ac_pow_red_reason = \"Communication\";\n        break;\n    case 010:\n        ac_pow_red_reason = \"AC Grid Power Limited\";\n        break;\n    case 011:\n        ac_pow_red_reason = \"Self Consumption Mode\";\n        break;\n    case 012:\n        ac_pow_red_reason = \"High Bus Voltage Protection\";\n        break;\n    case 013:\n        ac_pow_red_reason = \"LVRT or HVRT Process\";\n        break;\n    case 014:\n        ac_pow_red_reason = \"Nominal AC Current\";\n        break;\n    case 015:\n        ac_pow_red_reason = \"Grid Consumption Protection\";\n        break;\n    case 016:\n        ac_pow_red_reason = \"PV Surplus Injected to the Grid\";\n        break;\n    case 02:\n        ac_pow_red_reason = \"PCB Temperature\";\n        break;\n    case 03:\n        ac_pow_red_reason = \"Heat Sink Temperature\";\n        break;\n    case 04:\n        ac_pow_red_reason = \"Pac vs Fac Algorithm\";\n        break;\n    case 05:\n        ac_pow_red_reason = \"Soft Start\";\n        break;\n    case 06:\n        ac_pow_red_reason = \"Charge Power Configured\";\n        break;\n    case 07:\n        ac_pow_red_reason = \"PV Surplus injected to the Loads\";\n        break;\n    case 08:\n        ac_pow_red_reason = \"Pac vs Vac Algorithm\";\n        break;\n    case 09:\n        ac_pow_red_reason = \"Battery Power Limited\";\n        break;\n    default:\n        ac_pow_red_reason = \"Unknown reason\";\n}\nmsg.payload.active_power_reduction_reason_str = ac_pow_red_reason;\n\nlet reac_pow_setpoint_type;\nswitch(payload.reactive_power_setpoint_type){\n\n    case 00:\n        reac_pow_setpoint_type = \"Cosφ Configuration\";\n        break;\n    case 01:\n        reac_pow_setpoint_type = \"Qac Communication\";\n        break;\n    case 02:\n        reac_pow_setpoint_type = \"Cosφ Communication\";\n        break;\n    case 03:\n        reac_pow_setpoint_type = \"Qac vs Vac Algorithm\";\n        break;\n    case 04:\n        reac_pow_setpoint_type = \"Cosφ vs Pac Algorithm\";\n        break;\n    default:\n        reac_pow_setpoint_type = \"Unknown\";\n}\nmsg.payload.reactive_power_setpoint_type_str = reac_pow_setpoint_type;\n\nlet digi_output1;\nswitch(payload.digital_output1_status){\n    case 0:\n        digi_output1 = \"OFF\";\n        break;\n    case 1:\n        digi_output1 = \"ON\";\n        break;\n    default:\n        digi_output1 = \"Unknown\";\n}\nmsg.payload.digital_output1_status_str = digi_output1;\n\nlet digi_output2;\nswitch(payload.digital_output2_status){\n    case 0:\n        digi_output2 = \"OFF\";\n        break;\n    case 1:\n        digi_output2 = \"ON\";\n        break;\n    default:\n        digi_output2 = \"Unknown\";\n}\nmsg.payload.digital_output2_status_str = digi_output2;\n\nlet digi_inputdrm;\nswitch(payload.digital_input_drm0_status){\n    case 0:\n        digi_inputdrm = \"OFF\";\n        break;\n    case 1:\n        digi_inputdrm = \"ON\";\n        break;\n    default:\n        digi_inputdrm = \"Unknown\";\n}\nmsg.payload.digital_input_drm0_status_str = digi_inputdrm;\n\nlet digi_input2;\nswitch(payload.digital_input2_status){\n    case 0:\n        digi_input2 = \"OFF\";\n        break;\n    case 1:\n        digi_input2 = \"ON\";\n        break;\n    default:\n        digi_input2 = \"Unknown\";\n}\nmsg.payload.digital_input2_status_str = digi_input2;\n\nlet digi_input3;\nswitch(payload.digital_input3_status){\n    case 0:\n        digi_input3 = \"OFF\";\n        break;\n    case 1:\n        digi_input3 = \"ON\";\n        break;\n    default:\n        digi_input3 = \"Unknown\";\n}\nmsg.payload.digital_input3_status_str = digi_input3;\n\nlet bat_bms_flags = [];\nif(1<<0 & payload.battery_bms_flags) bat_bms_flags.push(\"Stop Charge\");\nif(1<<1 & payload.battery_bms_flags) bat_bms_flags.push(\"Stop Discharge\");\nif(1<<2 & payload.battery_bms_flags) bat_bms_flags.push(\"Forced Charge\");\nif(1<<3 & payload.battery_bms_flags) bat_bms_flags.push(\"Calibration\");\nmsg.payload.battery_bms_flags_str = bat_bms_flags.join(', ');\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 610,
+        "y": 160,
+        "wires": [
+            [
+                "8fc495d5ce1ffbc9",
+                "8b956afca39a06ad",
+                "dbeb529e606dafbd"
+            ]
+        ]
+    },
+    {
+        "id": "e72cfd29.488d",
+        "type": "modbus-read",
+        "z": "4aa3e13d.f801b",
+        "d": true,
+        "name": "Gavazzi IRs 1",
+        "topic": "",
+        "showStatusActivities": true,
+        "logIOActivities": false,
+        "showErrors": true,
+        "unitid": "1",
+        "dataType": "InputRegister",
+        "adr": "0",
+        "quantity": "37",
+        "rate": "15",
+        "rateUnit": "s",
+        "delayOnStart": false,
+        "startDelayTime": "1",
+        "server": "d8043f74.21d91",
+        "useIOFile": false,
+        "ioFile": "",
+        "useIOForPayload": false,
+        "emptyMsgOnFail": true,
+        "x": 170,
+        "y": 440,
+        "wires": [
+            [
+                "672b25db.857cfc"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "41310749.6b8068",
+        "type": "debug",
+        "z": "4aa3e13d.f801b",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 590,
+        "y": 440,
+        "wires": []
+    },
+    {
+        "id": "672b25db.857cfc",
+        "type": "buffer-parser",
+        "z": "4aa3e13d.f801b",
+        "name": "parse gavazzi set 1",
+        "data": "responseBuffer.buffer",
+        "dataType": "msg",
+        "specification": "spec",
+        "specificationType": "ui",
+        "items": [
+            {
+                "type": "int32le",
+                "name": "volts",
+                "offset": 0,
+                "length": 1,
+                "offsetbit": 0,
+                "scale": "/10",
+                "mask": ""
+            },
+            {
+                "type": "int32le",
+                "name": "amps",
+                "offset": 4,
+                "length": 1,
+                "offsetbit": 0,
+                "scale": "/1000",
+                "mask": ""
+            },
+            {
+                "type": "int32le",
+                "name": "watts",
+                "offset": 8,
+                "length": 1,
+                "offsetbit": 0,
+                "scale": "/10",
+                "mask": ""
+            },
+            {
+                "type": "int32le",
+                "name": "volt_ampers",
+                "offset": 12,
+                "length": 1,
+                "offsetbit": 0,
+                "scale": "/10",
+                "mask": ""
+            },
+            {
+                "type": "int32le",
+                "name": "volt_ampers_reactive",
+                "offset": 16,
+                "length": 1,
+                "offsetbit": 0,
+                "scale": "/10",
+                "mask": ""
+            },
+            {
+                "type": "int32le",
+                "name": "wdmd",
+                "offset": 20,
+                "length": 1,
+                "offsetbit": 0,
+                "scale": "/10",
+                "mask": ""
+            },
+            {
+                "type": "int32le",
+                "name": "wdmd_peak",
+                "offset": 24,
+                "length": 1,
+                "offsetbit": 0,
+                "scale": "/10",
+                "mask": ""
+            },
+            {
+                "type": "int16le",
+                "name": "power_factor",
+                "offset": 28,
+                "length": 1,
+                "offsetbit": 0,
+                "scale": "/1000",
+                "mask": ""
+            },
+            {
+                "type": "int16le",
+                "name": "hz",
+                "offset": 30,
+                "length": 1,
+                "offsetbit": 0,
+                "scale": "/10",
+                "mask": ""
+            },
+            {
+                "type": "int32le",
+                "name": "kwh_tot_in",
+                "offset": 32,
+                "length": 1,
+                "offsetbit": 0,
+                "scale": "/10",
+                "mask": ""
+            },
+            {
+                "type": "int32le",
+                "name": "kvar_tot_in",
+                "offset": 36,
+                "length": 1,
+                "offsetbit": 0,
+                "scale": "/10",
+                "mask": ""
+            },
+            {
+                "type": "int32le",
+                "name": "kwh_part_in",
+                "offset": 40,
+                "length": 1,
+                "offsetbit": 0,
+                "scale": "/10",
+                "mask": ""
+            },
+            {
+                "type": "int32le",
+                "name": "kvar_part_in",
+                "offset": 44,
+                "length": 1,
+                "offsetbit": 0,
+                "scale": "/10",
+                "mask": ""
+            },
+            {
+                "type": "int32le",
+                "name": "kwh_tariff1",
+                "offset": 48,
+                "length": 1,
+                "offsetbit": 0,
+                "scale": "/10",
+                "mask": ""
+            },
+            {
+                "type": "int32le",
+                "name": "kwh_tariff2",
+                "offset": 52,
+                "length": 1,
+                "offsetbit": 0,
+                "scale": "/10",
+                "mask": ""
+            },
+            {
+                "type": "int32le",
+                "name": "kwh_tariff3",
+                "offset": 56,
+                "length": 1,
+                "offsetbit": 0,
+                "scale": "/10",
+                "mask": ""
+            },
+            {
+                "type": "int32le",
+                "name": "kwh_tariff4",
+                "offset": 60,
+                "length": 1,
+                "offsetbit": 0,
+                "scale": "/10",
+                "mask": ""
+            },
+            {
+                "type": "int32le",
+                "name": "kwh_tot_out",
+                "offset": 64,
+                "length": 1,
+                "offsetbit": 0,
+                "scale": "/10",
+                "mask": ""
+            },
+            {
+                "type": "int32le",
+                "name": "kvar_tot_out",
+                "offset": 68,
+                "length": 1,
+                "offsetbit": 0,
+                "scale": "/10",
+                "mask": ""
+            }
+        ],
+        "swap1": "swap16",
+        "swap2": "",
+        "swap3": "",
+        "swap1Type": "swap",
+        "swap2Type": "swap",
+        "swap3Type": "swap",
+        "msgProperty": "payload",
+        "msgPropertyType": "str",
+        "resultType": "keyvalue",
+        "resultTypeType": "output",
+        "multipleResult": false,
+        "fanOutMultipleResult": false,
+        "setTopic": true,
+        "outputs": 1,
+        "x": 390,
+        "y": 440,
+        "wires": [
+            [
+                "41310749.6b8068"
+            ]
+        ]
+    },
+    {
+        "id": "630ab3b6.6939d4",
+        "type": "modbus-read",
+        "z": "4aa3e13d.f801b",
+        "name": "Gavazzi IRs 2",
+        "topic": "",
+        "showStatusActivities": true,
+        "logIOActivities": false,
+        "showErrors": true,
+        "unitid": "1",
+        "dataType": "InputRegister",
+        "adr": "62",
+        "quantity": "4",
+        "rate": "15",
+        "rateUnit": "s",
+        "delayOnStart": false,
+        "startDelayTime": "1",
+        "server": "d8043f74.21d91",
+        "useIOFile": false,
+        "ioFile": "",
+        "useIOForPayload": false,
+        "emptyMsgOnFail": true,
+        "x": 170,
+        "y": 300,
+        "wires": [
+            [
+                "467d1059.340288",
+                "afc71073.4c79d"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "467d1059.340288",
+        "type": "buffer-parser",
+        "z": "4aa3e13d.f801b",
+        "name": "parse gavazzi set 2",
+        "data": "responseBuffer.buffer",
+        "dataType": "msg",
+        "specification": "spec",
+        "specificationType": "ui",
+        "items": [
+            {
+                "type": "int32le",
+                "name": "amps",
+                "offset": 0,
+                "length": 1,
+                "offsetbit": 0,
+                "scale": "/1000",
+                "mask": ""
+            },
+            {
+                "type": "int32le",
+                "name": "volts",
+                "offset": 4,
+                "length": 1,
+                "offsetbit": 0,
+                "scale": "/10",
+                "mask": ""
+            },
+            {
+                "type": "int32le",
+                "name": "watts",
+                "offset": 12,
+                "length": 1,
+                "offsetbit": 0,
+                "scale": "/10",
+                "mask": ""
+            },
+            {
+                "type": "int32le",
+                "name": "voltampers",
+                "offset": 16,
+                "length": 1,
+                "offsetbit": 0,
+                "scale": "/10",
+                "mask": ""
+            },
+            {
+                "type": "int32le",
+                "name": "voltampers_reactive",
+                "offset": 20,
+                "length": 1,
+                "offsetbit": 0,
+                "scale": "/10",
+                "mask": ""
+            },
+            {
+                "type": "int32le",
+                "name": "power_factor",
+                "offset": 24,
+                "length": 1,
+                "offsetbit": 0,
+                "scale": "/1000",
+                "mask": ""
+            },
+            {
+                "type": "int32le",
+                "name": "frequency",
+                "offset": 32,
+                "length": 1,
+                "offsetbit": 0,
+                "scale": "/10",
+                "mask": ""
+            },
+            {
+                "type": "int32le",
+                "name": "kwh_tot_in",
+                "offset": 36,
+                "length": 1,
+                "offsetbit": 0,
+                "scale": "/10",
+                "mask": ""
+            },
+            {
+                "type": "int32le",
+                "name": "kvar_tot_in",
+                "offset": 40,
+                "length": 1,
+                "offsetbit": 0,
+                "scale": "/10",
+                "mask": ""
+            },
+            {
+                "type": "int32le",
+                "name": "kwh_tot_out",
+                "offset": 44,
+                "length": 1,
+                "offsetbit": 0,
+                "scale": "/10",
+                "mask": ""
+            },
+            {
+                "type": "int32le",
+                "name": "kvar_tot_out",
+                "offset": 48,
+                "length": 1,
+                "offsetbit": 0,
+                "scale": "/10",
+                "mask": ""
+            },
+            {
+                "type": "int32le",
+                "name": "kw_dmd",
+                "offset": 52,
+                "length": 1,
+                "offsetbit": 0,
+                "scale": "/10",
+                "mask": ""
+            },
+            {
+                "type": "int32le",
+                "name": "kw_dmd_peak",
+                "offset": 56,
+                "length": 1,
+                "offsetbit": 0,
+                "scale": "/10",
+                "mask": ""
+            }
+        ],
+        "swap1": "swap16",
+        "swap2": "",
+        "swap3": "",
+        "swap1Type": "swap",
+        "swap2Type": "swap",
+        "swap3Type": "swap",
+        "msgProperty": "payload",
+        "msgPropertyType": "str",
+        "resultType": "keyvalue",
+        "resultTypeType": "output",
+        "multipleResult": false,
+        "fanOutMultipleResult": false,
+        "setTopic": true,
+        "outputs": 1,
+        "x": 390,
+        "y": 300,
+        "wires": [
+            [
+                "b7a25998.d154d8"
+            ]
+        ]
+    },
+    {
+        "id": "afc71073.4c79d",
+        "type": "debug",
+        "z": "4aa3e13d.f801b",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 390,
+        "y": 240,
+        "wires": []
+    },
+    {
+        "id": "b7a25998.d154d8",
+        "type": "change",
+        "z": "4aa3e13d.f801b",
+        "name": "prepare totales",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "payload.{\t    \"exportacion\": - kwh_tot_out,\t    \"importacion\": kwh_tot_in\t}",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 600,
+        "y": 360,
+        "wires": [
+            [
+                "3a54eeed.5b39a2",
+                "b9b8fa4f.a3c7d8"
+            ]
+        ]
+    },
+    {
+        "id": "3a54eeed.5b39a2",
+        "type": "influxdb out",
+        "z": "4aa3e13d.f801b",
+        "influxdb": "636cb567.cfe544",
+        "name": "Electricidad totales in tests",
+        "measurement": "electricidad_totales",
+        "precision": "",
+        "retentionPolicy": "",
+        "database": "database",
+        "precisionV18FluxV20": "ms",
+        "retentionPolicyV18Flux": "",
+        "org": "organisation",
+        "bucket": "bucket",
+        "x": 860,
+        "y": 360,
+        "wires": []
+    },
+    {
+        "id": "b9b8fa4f.a3c7d8",
+        "type": "influxdb out",
+        "z": "4aa3e13d.f801b",
+        "influxdb": "353f3090.d331c",
+        "name": "Electricidad totales in tests - influx2",
+        "measurement": "electricidad_totales",
+        "precision": "",
+        "retentionPolicy": "",
+        "database": "database",
+        "precisionV18FluxV20": "ms",
+        "retentionPolicyV18Flux": "",
+        "org": "gonzalez-conesa",
+        "bucket": "tests",
+        "x": 880,
+        "y": 400,
+        "wires": []
+    },
+    {
+        "id": "22c2340d.0ba29c",
+        "type": "moment",
+        "z": "4aa3e13d.f801b",
+        "name": "Date",
+        "topic": "",
+        "input": "payload",
+        "inputType": "msg",
+        "inTz": "Europe/Madrid",
+        "adjAmount": 0,
+        "adjType": "days",
+        "adjDir": "add",
+        "format": "YYYYMMDD",
+        "locale": "ES",
+        "output": "date",
+        "outputType": "msg",
+        "outTz": "Europe/Madrid",
+        "x": 290,
+        "y": 840,
+        "wires": [
+            [
+                "b6cba319.11da18"
+            ]
+        ]
+    },
+    {
+        "id": "8fc495d5ce1ffbc9",
+        "type": "mqtt out",
+        "z": "4aa3e13d.f801b",
+        "name": "energy/inverter",
+        "topic": "energy/inverter",
+        "qos": "0",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "d03b4f35.65271",
+        "x": 880,
+        "y": 80,
+        "wires": []
+    },
+    {
+        "id": "8b956afca39a06ad",
+        "type": "function",
+        "z": "4aa3e13d.f801b",
+        "name": "flow calculations",
+        "func": "let payload = msg.payload;\n\nlet solar_export_power = payload.pv1_power + payload.pv2_power;\nlet house_import_power = payload.critical_loads_active_power;\nlet grid_export_power = 0;\nlet grid_import_power = 0;\nlet battery_import_power = 0;\nlet battery_export_power = 0;\n\nif (payload.battery_power < 0) {\n    battery_import_power = -payload.battery_power;\n} else {\n    battery_export_power = payload.battery_power;\n}\n\nif (payload.external_watt_meter_grid_active_power < 0) {\n    grid_import_power = -payload.external_watt_meter_grid_active_power;\n} else {\n    grid_export_power = payload.external_watt_meter_grid_active_power;\n}\n\n// flows\nlet grid_to_battery_power = 0;\nlet grid_to_house_power = 0;\nlet battery_to_house_power = 0;\nlet solar_to_house_power = 0;\nlet solar_to_battery_power = 0;\nlet solar_to_grid_power = 0;\n\n// isolated\nif (solar_export_power < house_import_power) {\n    solar_to_house_power = solar_export_power;\n    battery_to_house_power = battery_export_power;\n    grid_to_house_power = house_import_power - solar_to_house_power - battery_to_house_power;\n    grid_to_battery_power = battery_import_power;\n} else {\n    if (battery_export_power > 0 && grid_export_power > 0) {\n        solar_to_house_power = house_import_power - battery_export_power - grid_export_power;\n        grid_to_house_power = grid_export_power;\n        battery_to_house_power = battery_export_power;\n    } else if (battery_export_power > 0 && grid_import_power > 0) {\n        solar_to_house_power = house_import_power - battery_export_power;\n        battery_to_house_power = battery_export_power;\n        solar_to_grid_power = grid_import_power;\n    } else if (battery_import_power > 0 && grid_export_power > 0) {\n        if (grid_export_power > house_import_power) {\n            solar_to_house_power = house_import_power;\n            solar_to_battery_power = solar_export_power - solar_to_house_power;\n            grid_to_battery_power = grid_export_power;\n        } else {\n            solar_to_house_power = house_import_power - grid_export_power;\n            grid_to_house_power = grid_export_power;\n            solar_to_battery_power = battery_import_power;\n        }\n    } else if (battery_import_power > 0 && grid_import_power > 0) {\n        solar_to_house_power = house_import_power;\n        solar_to_battery_power = battery_import_power;\n        solar_to_grid_power = grid_import_power;\n    }\n}\n\n\nmsg.payload = {\n    \"energy/flow/solar_export_power\": solar_export_power,\n    \"energy/flow/house_import_power\": house_import_power,\n    \"energy/flow/battery_import_power\": battery_import_power,\n    \"energy/flow/battery_export_power\": battery_export_power,\n    \"energy/flow/grid_export_power\": grid_export_power,\n    \"energy/flow/grid_import_power\": grid_import_power,\n    \"energy/flow/grid_to_battery_power\": grid_to_battery_power,\n    \"energy/flow/grid_to_house_power\": grid_to_house_power,\n    \"energy/flow/battery_to_house_power\": battery_to_house_power,\n    \"energy/flow/solar_to_house_power\": solar_to_house_power,\n    \"energy/flow/solar_to_battery_power\": solar_to_battery_power,\n    \"energy/flow/solar_to_grid_power\": solar_to_grid_power,\n    \"energy/battery/soc\": payload.battery_soc\n};\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 840,
+        "y": 220,
+        "wires": [
+            [
+                "ca99450bcbf71258"
+            ]
+        ]
+    },
+    {
+        "id": "ca99450bcbf71258",
+        "type": "split",
+        "z": "4aa3e13d.f801b",
+        "name": "split into flow topics",
+        "splt": "\\n",
+        "spltType": "str",
+        "arraySplt": 1,
+        "arraySpltType": "len",
+        "stream": false,
+        "addname": "topic",
+        "x": 1050,
+        "y": 220,
+        "wires": [
+            [
+                "53b71086b00df6e5",
+                "4c53df23.db3fb"
+            ]
+        ]
+    },
+    {
+        "id": "53b71086b00df6e5",
+        "type": "mqtt out",
+        "z": "4aa3e13d.f801b",
+        "name": "energy/flow",
+        "topic": "",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "d03b4f35.65271",
+        "x": 1250,
+        "y": 220,
+        "wires": []
+    },
+    {
+        "id": "dbeb529e606dafbd",
+        "type": "influxdb out",
+        "z": "4aa3e13d.f801b",
+        "influxdb": "636cb567.cfe544",
+        "name": "inverter to influxdb",
+        "measurement": "inverter",
+        "precision": "",
+        "retentionPolicy": "",
+        "database": "database",
+        "precisionV18FluxV20": "ms",
+        "retentionPolicyV18Flux": "",
+        "org": "organisation",
+        "bucket": "bucket",
+        "x": 890,
+        "y": 160,
+        "wires": []
+    },
+    {
+        "id": "7f973806095dd129",
+        "type": "http request",
+        "z": "ea8eb34daf89c9a3",
+        "name": "REST login",
+        "method": "POST",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "https://www.i-de.es/consumidores/rest/loginNew/login",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "authType": "",
+        "senderr": false,
+        "x": 670,
+        "y": 160,
+        "wires": [
+            [
+                "6d671ca68fdb8b3f",
+                "b80b6c47c7264865"
+            ]
+        ]
+    },
+    {
+        "id": "6d671ca68fdb8b3f",
+        "type": "debug",
+        "z": "ea8eb34daf89c9a3",
+        "name": "login response",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1020,
+        "y": 80,
+        "wires": []
+    },
+    {
+        "id": "3a141e7787a075bc",
+        "type": "inject",
+        "z": "ea8eb34daf89c9a3",
+        "name": "start",
+        "props": [],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "x": 90,
+        "y": 160,
+        "wires": [
+            [
+                "cca5cb8c5e963c90"
+            ]
+        ]
+    },
+    {
+        "id": "b80b6c47c7264865",
+        "type": "function",
+        "z": "ea8eb34daf89c9a3",
+        "name": "prepare cookies",
+        "func": "success = \"fail\"\nheaders = {}\n\nif (msg.statusCode == 200 && msg.payload.success == \"true\") {\n    success = \"true\"\n}\n\nif (success == \"true\") {\n    cookies = msg.responseCookies\n}\n\ncookie_names = Object.keys(cookies)\ncookie_names.forEach((key) => {\n    cookies[key]['encode'] = false\n})\n\n// create a msg for both requests\n// consumption\nmsg1 = {}\nmsg1.success = success\nmsg1.cookies = cookies\nmsg1.url = \"https://www.i-de.es/consumidores/rest/consumoNew/obtenerDatosConsumo/fechaInicio/02-04-202200:00:00/colectivo/USU/frecuencia/horas/acumular/false\"\n\nmsg2 = {}\nmsg2.success = success\nmsg2.cookies = cookies\nmsg2.url = \"https://www.i-de.es/consumidores/rest/consumoNew/obtenerDatosProduccion/fechaInicio/02-04-202200:00:00/colectivo/USU/frecuencia/horas/acumular/false\"\nreturn [[msg1, msg2]];",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 940,
+        "y": 200,
+        "wires": [
+            [
+                "6f0994882f9b917f",
+                "46d1ebf6815ba414"
+            ]
+        ]
+    },
+    {
+        "id": "6f0994882f9b917f",
+        "type": "http request",
+        "z": "ea8eb34daf89c9a3",
+        "name": "get consumption",
+        "method": "GET",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "authType": "",
+        "senderr": false,
+        "x": 1290,
+        "y": 200,
+        "wires": [
+            [
+                "20a9fe642d290731"
+            ]
+        ]
+    },
+    {
+        "id": "20a9fe642d290731",
+        "type": "debug",
+        "z": "ea8eb34daf89c9a3",
+        "name": "data response",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1580,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "46d1ebf6815ba414",
+        "type": "debug",
+        "z": "ea8eb34daf89c9a3",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1290,
+        "y": 80,
+        "wires": []
+    },
+    {
+        "id": "cca5cb8c5e963c90",
+        "type": "credentials",
+        "z": "ea8eb34daf89c9a3",
+        "name": "user/pass",
+        "props": [
+            {
+                "value": "username",
+                "type": "msg"
+            },
+            {
+                "value": "password",
+                "type": "msg"
+            }
+        ],
+        "x": 260,
+        "y": 160,
+        "wires": [
+            [
+                "8da09af6bc677c41"
+            ]
+        ]
+    },
+    {
+        "id": "60c8b42163a3f127",
+        "type": "debug",
+        "z": "ea8eb34daf89c9a3",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 790,
+        "y": 60,
+        "wires": []
+    },
+    {
+        "id": "8da09af6bc677c41",
+        "type": "template",
+        "z": "ea8eb34daf89c9a3",
+        "name": "prepare login",
+        "field": "payload",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "[\"{{username}}\",\"{{password}}\",null,\"Windows 10\",\"PC\",\"Firefox 98.0\",\"0\",\"\",\"s\"]",
+        "output": "json",
+        "x": 460,
+        "y": 160,
+        "wires": [
+            [
+                "7f973806095dd129",
+                "60c8b42163a3f127"
+            ]
+        ]
+    },
+    {
+        "id": "9ef45b0dc159052a",
+        "type": "cronplus",
+        "z": "ea8eb34daf89c9a3",
+        "name": "Export price",
+        "outputField": "payload",
+        "timeZone": "Europe/Madrid",
+        "persistDynamic": false,
+        "commandResponseMsgOutput": "output1",
+        "outputs": 1,
+        "options": [
+            {
+                "name": "off-peak week",
+                "topic": "energy/price/export",
+                "payloadType": "num",
+                "payload": "0.133565",
+                "expressionType": "cron",
+                "expression": "0 0 0-11,23 * * 1-5 *",
+                "location": "",
+                "offset": "0",
+                "solarType": "all",
+                "solarEvents": "sunrise,sunset"
+            },
+            {
+                "name": "peak week",
+                "topic": "energy/price/export",
+                "payloadType": "num",
+                "payload": "0.191362",
+                "expressionType": "cron",
+                "expression": "0 0 12-22 * * 1-5 *",
+                "location": "",
+                "offset": "0",
+                "solarType": "all",
+                "solarEvents": "sunrise,sunset"
+            },
+            {
+                "name": "off-peak weekend",
+                "topic": "energy/price/export",
+                "payloadType": "num",
+                "payload": "0.133565",
+                "expressionType": "cron",
+                "expression": "0 0 * * * 6,7 *",
+                "location": "",
+                "offset": "0",
+                "solarType": "all",
+                "solarEvents": "sunrise,sunset"
+            }
+        ],
+        "x": 270,
+        "y": 440,
+        "wires": [
+            [
+                "9f4c053dd2bc17c5"
+            ]
+        ]
+    },
+    {
+        "id": "737f091b677fea8e",
+        "type": "influxdb in",
+        "z": "ea8eb34daf89c9a3",
+        "influxdb": "636cb567.cfe544",
+        "name": "",
+        "query": "",
+        "rawOutput": false,
+        "precision": "",
+        "retentionPolicy": "",
+        "org": "organisation",
+        "x": 720,
+        "y": 520,
+        "wires": [
+            [
+                "7942b17e3ea3da20",
+                "755cfffa3e97e4f0"
+            ]
+        ]
+    },
+    {
+        "id": "48518b5c8af7b95c",
+        "type": "cronplus",
+        "z": "ea8eb34daf89c9a3",
+        "name": "Import price",
+        "outputField": "payload",
+        "timeZone": "Europe/Madrid",
+        "persistDynamic": false,
+        "commandResponseMsgOutput": "output1",
+        "outputs": 1,
+        "options": [
+            {
+                "name": "schedule1",
+                "topic": "energy/price/import",
+                "payloadType": "date",
+                "payload": "",
+                "expressionType": "cron",
+                "expression": "0 0 * * * * *",
+                "location": "",
+                "offset": "0",
+                "solarType": "all",
+                "solarEvents": "sunrise,sunset"
+            }
+        ],
+        "x": 270,
+        "y": 520,
+        "wires": [
+            [
+                "d4a23d7e9772a27a"
+            ]
+        ]
+    },
+    {
+        "id": "d4a23d7e9772a27a",
+        "type": "change",
+        "z": "ea8eb34daf89c9a3",
+        "name": "Construct query",
+        "rules": [
+            {
+                "t": "set",
+                "p": "query",
+                "pt": "msg",
+                "to": "$string(\"SELECT mean(\" & '\"PMH\"' & \") - mean(\" & '\"CDSVh\"' & \") FROM \" & '\"esios\"' & \" WHERE time = \" & $number(cronplus.triggerTimestamp) & '000000')\t",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 480,
+        "y": 520,
+        "wires": [
+            [
+                "737f091b677fea8e"
+            ]
+        ]
+    },
+    {
+        "id": "7942b17e3ea3da20",
+        "type": "debug",
+        "z": "ea8eb34daf89c9a3",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1010,
+        "y": 600,
+        "wires": []
+    },
+    {
+        "id": "755cfffa3e97e4f0",
+        "type": "change",
+        "z": "ea8eb34daf89c9a3",
+        "name": "Update payload",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "$number(payload[0].mean_mean) / 1000",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 960,
+        "y": 520,
+        "wires": [
+            [
+                "7108b2bc685f126c"
+            ]
+        ]
+    },
+    {
+        "id": "7108b2bc685f126c",
+        "type": "mqtt out",
+        "z": "ea8eb34daf89c9a3",
+        "name": "energy/price/import",
+        "topic": "",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "d03b4f35.65271",
+        "x": 1190,
+        "y": 520,
+        "wires": []
+    },
+    {
+        "id": "9f4c053dd2bc17c5",
+        "type": "mqtt out",
+        "z": "ea8eb34daf89c9a3",
+        "name": "energy/price/export",
+        "topic": "",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "d03b4f35.65271",
+        "x": 490,
+        "y": 440,
+        "wires": []
+    },
+    {
+        "id": "1357a75d3caf7e38",
+        "type": "inject",
+        "z": "3daecb3a84194248",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 140,
+        "y": 200,
+        "wires": [
+            [
+                "17a9031884d4e404"
+            ]
+        ]
+    },
+    {
+        "id": "6608ecf575d34bac",
+        "type": "debug",
+        "z": "3daecb3a84194248",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1470,
+        "y": 120,
+        "wires": []
+    },
+    {
+        "id": "17a9031884d4e404",
+        "type": "Asterisk-AMI",
+        "z": "3daecb3a84194248",
+        "name": "asterisk",
+        "ip": "sip.lanquarden.com",
+        "port": "5038",
+        "user": "",
+        "events": "Newexten,Hangup",
+        "x": 320,
+        "y": 200,
+        "wires": [
+            [
+                "43b2412a7599340e"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "e883ae6cf35d4b17",
+        "type": "switch",
+        "z": "3daecb3a84194248",
+        "name": "is ring",
+        "property": "payload",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "ring",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 1170,
+        "y": 200,
+        "wires": [
+            [
+                "6608ecf575d34bac",
+                "0eaeaebd8a6c7724"
+            ]
+        ]
+    },
+    {
+        "id": "43b2412a7599340e",
+        "type": "switch",
+        "z": "3daecb3a84194248",
+        "name": "Sort door events",
+        "property": "payload",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "jsonata_exp",
+                "v": "payload.channelstatedesc = \"Ring\" and\tpayload.calleridnum = \"20\" and\tpayload.exten = \"50\"",
+                "vt": "jsonata"
+            },
+            {
+                "t": "jsonata_exp",
+                "v": "payload.event = \"Hangup\"",
+                "vt": "jsonata"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 550,
+        "y": 200,
+        "wires": [
+            [
+                "9ac74e7fbb44a96c"
+            ],
+            [
+                "f62e6016c23653c6"
+            ]
+        ]
+    },
+    {
+        "id": "9ac74e7fbb44a96c",
+        "type": "change",
+        "z": "3daecb3a84194248",
+        "name": "Ringing",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "ring",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 760,
+        "y": 180,
+        "wires": [
+            [
+                "41b26f35529ff7aa"
+            ]
+        ]
+    },
+    {
+        "id": "f62e6016c23653c6",
+        "type": "change",
+        "z": "3daecb3a84194248",
+        "name": "Hanging up",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "hangup",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 770,
+        "y": 220,
+        "wires": [
+            [
+                "41b26f35529ff7aa"
+            ]
+        ]
+    },
+    {
+        "id": "41b26f35529ff7aa",
+        "type": "rbe",
+        "z": "3daecb3a84194248",
+        "name": "pass changes",
+        "func": "rbe",
+        "gap": "",
+        "start": "",
+        "inout": "out",
+        "septopics": false,
+        "property": "payload",
+        "topi": "topic",
+        "x": 980,
+        "y": 200,
+        "wires": [
+            [
+                "e883ae6cf35d4b17"
+            ]
+        ]
+    },
+    {
+        "id": "2fba9f0d156f36d5",
+        "type": "api-call-service",
+        "z": "3daecb3a84194248",
+        "name": "play ring tone",
+        "server": "b559dfa2.ecc5b8",
+        "version": 1,
+        "debugenabled": false,
+        "service_domain": "media_player",
+        "service": "play_media",
+        "entityId": "media_player.mopidy",
+        "data": "{\"entity_id\":\"media_player.mopidy\",\"media_content_id\":\"local:track:The%20White%20Stripes/Get%20Behind%20Me%20Satan/03%20-%20My%20Doorbell.mp3\",\"media_content_type\":\"music\"}",
+        "dataType": "json",
+        "mergecontext": "",
+        "output_location": "payload",
+        "output_location_type": "none",
+        "mustacheAltTags": false,
+        "x": 1620,
+        "y": 240,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "7bbe6346297f931b",
+        "type": "inject",
+        "z": "3daecb3a84194248",
+        "name": "open",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "control",
+        "payload": "open",
+        "payloadType": "str",
+        "x": 1040,
+        "y": 360,
+        "wires": [
+            [
+                "0eaeaebd8a6c7724"
+            ]
+        ]
+    },
+    {
+        "id": "f93c21190a8977ed",
+        "type": "inject",
+        "z": "3daecb3a84194248",
+        "name": "close",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "control",
+        "payload": "close",
+        "payloadType": "str",
+        "x": 1050,
+        "y": 420,
+        "wires": [
+            [
+                "0eaeaebd8a6c7724"
+            ]
+        ]
+    },
+    {
+        "id": "0eaeaebd8a6c7724",
+        "type": "gate",
+        "z": "3daecb3a84194248",
+        "name": "",
+        "controlTopic": "control",
+        "defaultState": "open",
+        "openCmd": "open",
+        "closeCmd": "close",
+        "toggleCmd": "toggle",
+        "defaultCmd": "default",
+        "statusCmd": "status",
+        "persist": false,
+        "x": 1400,
+        "y": 240,
+        "wires": [
+            [
+                "2fba9f0d156f36d5"
+            ]
+        ]
+    },
+    {
+        "id": "b464bbaa.5be868",
+        "type": "gate",
+        "z": "449c915c4d2b36cc",
+        "name": "gate demo",
+        "controlTopic": "control",
+        "defaultState": "open",
+        "openCmd": "open",
+        "closeCmd": "close",
+        "toggleCmd": "toggle",
+        "defaultCmd": "default",
+        "statusCmd": "status",
+        "persist": false,
+        "x": 1030,
+        "y": 240,
+        "wires": [
+            [
+                "8ba20475.bd1c28"
+            ]
+        ]
+    },
+    {
+        "id": "f61b4c1c.d6f8",
+        "type": "inject",
+        "z": "449c915c4d2b36cc",
+        "name": "input",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 730,
+        "y": 240,
+        "wires": [
+            [
+                "b464bbaa.5be868"
+            ]
+        ]
+    },
+    {
+        "id": "57c0705e.2b648",
+        "type": "inject",
+        "z": "449c915c4d2b36cc",
+        "name": "open",
+        "props": [
+            {
+                "p": "payload",
+                "v": "open",
+                "vt": "str"
+            },
+            {
+                "p": "topic",
+                "v": "control",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "control",
+        "payload": "open",
+        "payloadType": "str",
+        "x": 830,
+        "y": 140,
+        "wires": [
+            [
+                "b464bbaa.5be868"
+            ]
+        ]
+    },
+    {
+        "id": "e56d6ef2.db15b8",
+        "type": "inject",
+        "z": "449c915c4d2b36cc",
+        "name": "close",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "control",
+        "payload": "close",
+        "payloadType": "str",
+        "x": 830,
+        "y": 180,
+        "wires": [
+            [
+                "b464bbaa.5be868"
+            ]
+        ]
+    },
+    {
+        "id": "310d032f.aa197c",
+        "type": "inject",
+        "z": "449c915c4d2b36cc",
+        "name": "toggle",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "control",
+        "payload": "toggle",
+        "payloadType": "str",
+        "x": 830,
+        "y": 300,
+        "wires": [
+            [
+                "b464bbaa.5be868"
+            ]
+        ]
+    },
+    {
+        "id": "c5e19f28.1e37d",
+        "type": "inject",
+        "z": "449c915c4d2b36cc",
+        "name": "reset",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "control",
+        "payload": "default",
+        "payloadType": "str",
+        "x": 830,
+        "y": 340,
+        "wires": [
+            [
+                "b464bbaa.5be868"
+            ]
+        ]
+    },
+    {
+        "id": "8ba20475.bd1c28",
+        "type": "debug",
+        "z": "449c915c4d2b36cc",
+        "name": "output",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1170,
+        "y": 240,
+        "wires": []
+    },
+    {
+        "id": "7f423eb5.3d6508",
+        "type": "inject",
+        "z": "449c915c4d2b36cc",
+        "name": "status",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "control",
+        "payload": "status",
+        "payloadType": "str",
+        "x": 830,
+        "y": 380,
+        "wires": [
+            [
+                "b464bbaa.5be868"
+            ]
+        ]
+    },
+    {
+        "id": "516d9d16.30ddac",
+        "type": "status",
+        "z": "449c915c4d2b36cc",
+        "name": "gate status",
+        "scope": [
+            "b464bbaa.5be868"
+        ],
+        "x": 1020,
+        "y": 300,
+        "wires": [
+            [
+                "f66030c4.9dce28"
+            ]
+        ]
+    },
+    {
+        "id": "f66030c4.9dce28",
+        "type": "debug",
+        "z": "449c915c4d2b36cc",
+        "name": "status text",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "status.text",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1170,
+        "y": 300,
+        "wires": []
+    },
+    {
+        "id": "3b20af8332096715",
+        "type": "inject",
+        "z": "57dc10d1a06c1bd8",
+        "name": "cada día a las 20:30",
+        "props": [],
+        "repeat": "",
+        "crontab": "30 20 * * *",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payloadType": "str",
+        "x": 180,
+        "y": 80,
+        "wires": [
+            [
+                "62d6d44413766a47"
+            ]
+        ],
+        "info": "Cada día a las 20:00 se publica la información de la subasta de energía para el día siguiente. Damos algo de margen y lo recuperamos a las 20:30."
+    },
+    {
+        "id": "97ea195159bf5ce0",
+        "type": "http request",
+        "z": "57dc10d1a06c1bd8",
+        "name": "recupera de ESIOS",
+        "method": "GET",
+        "ret": "bin",
+        "paytoqs": "ignore",
+        "url": "https://api.esios.ree.es/archives/71/download?date_type=datos&end_date={{{payload}}}T23%3A59%3A59%2B00%3A00&locale=es&start_date={{{payload}}}T00%3A00%3A00%2B00%3A00",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "authType": "",
+        "x": 650,
+        "y": 80,
+        "wires": [
+            [
+                "debe41136e0d4bd7",
+                "819971ce6db8f5ef"
+            ]
+        ]
+    },
+    {
+        "id": "0ed10a7926f5b8f5",
+        "type": "debug",
+        "z": "57dc10d1a06c1bd8",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 590,
+        "y": 380,
+        "wires": []
+    },
+    {
+        "id": "8a6586a34ad3591e",
+        "type": "change",
+        "z": "57dc10d1a06c1bd8",
+        "name": "formatea influx (nuevo PVPC)",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "payload. [{\t        'time': $number($moment(A, 'DD/MM/YYYY').format('x')) + ($number(B) -1)*1000*60*60,\t        'PVPC': $number(E),\t        'TEU': $number(F),\t        'TCU': $number(G),\t        'PVPC PERD': $number(H),\t        'Coeficiente pérdidas estandar': $number(I),\t        'CP': $number(J),\t        'OC': $number(K),\t        'OS': $number(L),\t        'OM': $number(M),\t        'Cargo capacidad': $number(N),\t        'Servicio interrumpibilidad': $number(O),\t        'Excedente o déficit de subastas renovables': $number(P),\t        'CCVh RCVtovph': $number(Q),\t        'CCVh RFE': $number(R),\t        'CCVh RMRv': $number(S),\t        'CCVh rutinaria': $number(T),\t        'SAh': $number(U),\t        'Otros sistema': $number(V),\t        'CDSVh': $number(W),\t        'Coste banda': $number(X),\t        'Coste reserva': $number(Y),\t        'Coste restricciones técnicas diario': $number(Z),\t        'PMH': $number(AA),\t        'Componente intradiario 1': $number(AB),\t        'Mercado diario': $number(AC),\t        'Coeficiente perfilado': $number(AE)\t    },\t    {\t        'Peaje': C,\t        'Periodo': $number(D)\t    }\t]",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 300,
+        "y": 300,
+        "wires": [
+            [
+                "0ed10a7926f5b8f5",
+                "201be0188a6501e7"
+            ]
+        ]
+    },
+    {
+        "id": "94670ae69ef6b63d",
+        "type": "influxdb out",
+        "z": "57dc10d1a06c1bd8",
+        "influxdb": "353f3090.d331c",
+        "name": "Influxdb2 tests",
+        "measurement": "esios",
+        "precision": "ms",
+        "retentionPolicy": "",
+        "database": "database",
+        "precisionV18FluxV20": "ms",
+        "retentionPolicyV18Flux": "",
+        "org": "gonzalez-conesa",
+        "bucket": "tests",
+        "x": 620,
+        "y": 320,
+        "wires": []
+    },
+    {
+        "id": "62d6d44413766a47",
+        "type": "moment",
+        "z": "57dc10d1a06c1bd8",
+        "name": "mañana",
+        "topic": "",
+        "input": "payload",
+        "inputType": "msg",
+        "inTz": "Europe/Madrid",
+        "adjAmount": "1",
+        "adjType": "days",
+        "adjDir": "add",
+        "format": "YYYY-MM-DD",
+        "locale": "ES",
+        "output": "payload",
+        "outputType": "msg",
+        "outTz": "Europe/Madrid",
+        "x": 420,
+        "y": 80,
+        "wires": [
+            [
+                "97ea195159bf5ce0"
+            ]
+        ]
+    },
+    {
+        "id": "201be0188a6501e7",
+        "type": "influxdb out",
+        "z": "57dc10d1a06c1bd8",
+        "influxdb": "636cb567.cfe544",
+        "name": "",
+        "measurement": "esios",
+        "precision": "ms",
+        "retentionPolicy": "",
+        "database": "database",
+        "precisionV18FluxV20": "ms",
+        "retentionPolicyV18Flux": "",
+        "org": "organisation",
+        "bucket": "bucket",
+        "x": 640,
+        "y": 280,
+        "wires": []
+    },
+    {
+        "id": "fa469e45922dd61f",
+        "type": "inject",
+        "z": "57dc10d1a06c1bd8",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "2023-03-11",
+        "payloadType": "str",
+        "x": 410,
+        "y": 120,
+        "wires": [
+            [
+                "97ea195159bf5ce0"
+            ]
+        ]
+    },
+    {
+        "id": "44a1529f55774b7b",
+        "type": "change",
+        "z": "57dc10d1a06c1bd8",
+        "name": "formatea influx (PVPC previo)",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "payload. [{\t        'time': $number($moment(A, 'DD/MM/YYYY').format('x')) + ($number(B) -1)*1000*60*60,\t        'PVPC': $number(E),\t        'TEU': $number(F),\t        'TCU': $number(G),\t        'PVPC PERD': $number(H),\t        'Coeficiente pérdidas estandar': $number(I),\t        'CP': $number(J),\t        'OC': $number(K),\t        'OS': $number(L),\t        'OM': $number(M),\t        'Cargo capacidad': $number(N),\t        'Servicio interrumpibilidad': $number(O),\t        'CCVh RCVtovph': $number(P),\t        'CCVh RFE': $number(Q),\t        'CCVh RMRv': $number(R),\t        'CCVh rutinaria': $number(S),\t        'SAh': $number(T),\t        'Otros sistema': $number(U),\t        'CDSVh': $number(V),\t        'Coste banda': $number(W),\t        'Coste reserva': $number(X),\t        'Coste restricciones técnicas diario': $number(Y),\t        'PMH': $number(Z),\t        'Componente intradiario 1': $number(AA),\t        'Mercado diario': $number(AB)\t    },\t    {\t        'Peaje': C,\t        'Periodo': $number(D)\t    }\t]",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 300,
+        "y": 360,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "debe41136e0d4bd7",
+        "type": "book",
+        "z": "57dc10d1a06c1bd8",
+        "name": "lee excel",
+        "x": 240,
+        "y": 200,
+        "wires": [
+            [
+                "aabd21bd0b1263f8"
+            ]
+        ]
+    },
+    {
+        "id": "aabd21bd0b1263f8",
+        "type": "sheet",
+        "z": "57dc10d1a06c1bd8",
+        "name": "extrae hoja",
+        "sheetName": "Tabla de Datos PCB",
+        "x": 430,
+        "y": 200,
+        "wires": [
+            [
+                "a1fad24bd43cda90"
+            ]
+        ]
+    },
+    {
+        "id": "a1fad24bd43cda90",
+        "type": "sheet-to-json",
+        "z": "57dc10d1a06c1bd8",
+        "name": "convierte a json",
+        "raw": "false",
+        "range": "A6:AB78",
+        "header": "A",
+        "blankrows": false,
+        "x": 660,
+        "y": 200,
+        "wires": [
+            [
+                "8a6586a34ad3591e"
+            ]
+        ]
+    },
+    {
+        "id": "819971ce6db8f5ef",
+        "type": "debug",
+        "z": "57dc10d1a06c1bd8",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 960,
+        "y": 120,
+        "wires": []
     }
 ]
