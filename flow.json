@@ -7,13 +7,6 @@
         "info": "The standard homematic thermostat does not reflect the state I want, so a mqtt one is created with the state driven by this flow."
     },
     {
-        "id": "553bfbb.b5eaa84",
-        "type": "tab",
-        "label": "Kids",
-        "disabled": false,
-        "info": ""
-    },
-    {
         "id": "4aa3e13d.f801b",
         "type": "tab",
         "label": "Solar",
@@ -39,7 +32,7 @@
     {
         "id": "449c915c4d2b36cc",
         "type": "tab",
-        "label": "Flow 1",
+        "label": "Morning close",
         "disabled": false,
         "info": "",
         "env": []
@@ -47,7 +40,7 @@
     {
         "id": "f9f76430cac568e2",
         "type": "tab",
-        "label": "Flow 2",
+        "label": "Pastis",
         "disabled": false,
         "info": "",
         "env": []
@@ -63,12 +56,28 @@
         "id": "b559dfa2.ecc5b8",
         "type": "server",
         "name": "Home Assistant",
-        "legacy": false,
         "addon": false,
         "rejectUnauthorizedCerts": true,
-        "ha_boolean": "y|yes|true|on|home|open",
+        "ha_boolean": [
+            "y",
+            "|",
+            "e",
+            "s",
+            "t",
+            "r",
+            "u",
+            "o",
+            "n",
+            "h",
+            "m",
+            "p"
+        ],
         "connectionDelay": true,
-        "cacheJson": true
+        "cacheJson": true,
+        "heartbeat": false,
+        "heartbeatInterval": "",
+        "statusSeparator": "",
+        "enableGlobalContextStore": false
     },
     {
         "id": "d03b4f35.65271",
@@ -99,7 +108,7 @@
         "bufferCommands": true,
         "stateLogEnabled": false,
         "queueLogEnabled": false,
-        "tcpHost": "192.168.1.149",
+        "tcpHost": "inverter.lanquarden.com",
         "tcpPort": "502",
         "tcpType": "DEFAULT",
         "serialPort": "/dev/ttyUSB",
@@ -110,11 +119,11 @@
         "serialParity": "none",
         "serialConnectionDelay": "100",
         "serialAsciiResponseStartDelimiter": "",
-        "unit_id": 1,
-        "commandDelay": 1,
-        "clientTimeout": 1000,
+        "unit_id": "1",
+        "commandDelay": "1",
+        "clientTimeout": "1000",
         "reconnectOnTimeout": true,
-        "reconnectTimeout": 2000,
+        "reconnectTimeout": "2000",
         "parallelUnitIdsAllowed": true
     },
     {
@@ -125,7 +134,7 @@
         "bufferCommands": true,
         "stateLogEnabled": false,
         "queueLogEnabled": false,
-        "tcpHost": "192.168.1.149",
+        "tcpHost": "inverter.lanquarden.com",
         "tcpPort": "503",
         "tcpType": "DEFAULT",
         "serialPort": "/dev/ttyUSB",
@@ -146,7 +155,7 @@
     {
         "id": "636cb567.cfe544",
         "type": "influxdb",
-        "hostname": "192.168.1.22",
+        "hostname": "influxdb.observability",
         "port": "8086",
         "protocol": "http",
         "database": "energy",
@@ -190,27 +199,22 @@
         "z": "c1aba6ca.ae591",
         "name": "homematic thermostats",
         "server": "b559dfa2.ecc5b8",
-        "version": 1,
-        "exposeToHomeAssistant": false,
-        "haConfig": [
-            {
-                "property": "name",
-                "value": ""
-            },
-            {
-                "property": "icon",
-                "value": ""
-            }
-        ],
-        "entityidfilter": "climate.(neq1521926|neq1521913|neq1521927|neq1521928)",
-        "entityidfiltertype": "regex",
-        "outputinitially": false,
-        "state_type": "str",
-        "haltifstate": "",
-        "halt_if_type": "str",
-        "halt_if_compare": "is",
+        "version": 6,
         "outputs": 1,
-        "output_only_on_state_change": false,
+        "exposeAsEntityConfig": "",
+        "entities": {
+            "entity": [],
+            "substring": [],
+            "regex": [
+                "climate.(neq1521926|neq1521913|neq1521927|neq1521928)"
+            ]
+        },
+        "outputInitially": false,
+        "stateType": "str",
+        "ifState": "",
+        "ifStateType": "str",
+        "ifStateOperator": "is",
+        "outputOnlyOnStateChange": false,
         "for": 0,
         "forType": "num",
         "forUnits": "minutes",
@@ -219,6 +223,26 @@
         "ignorePrevStateUnavailable": false,
         "ignoreCurrentStateUnknown": false,
         "ignoreCurrentStateUnavailable": false,
+        "outputProperties": [
+            {
+                "property": "payload",
+                "propertyType": "msg",
+                "value": "string",
+                "valueType": "entityState"
+            },
+            {
+                "property": "data",
+                "propertyType": "msg",
+                "value": "",
+                "valueType": "eventData"
+            },
+            {
+                "property": "topic",
+                "propertyType": "msg",
+                "value": "",
+                "valueType": "triggerId"
+            }
+        ],
         "x": 260,
         "y": 100,
         "wires": [
@@ -382,6 +406,19 @@
         "z": "c1aba6ca.ae591",
         "name": "living room heating active",
         "server": "b559dfa2.ecc5b8",
+        "inputs": 0,
+        "outputs": 2,
+        "constraints": [
+            {
+                "targetType": "this_entity",
+                "targetValue": "",
+                "propertyType": "property",
+                "comparatorType": ">",
+                "comparatorValueDatatype": "num",
+                "comparatorValue": "5",
+                "propertyValue": "new_state.attributes.valve"
+            }
+        ],
         "exposeToHomeAssistant": false,
         "haConfig": [
             {
@@ -396,18 +433,6 @@
         "entityid": "climate.(neq1411046|neq1411004|oeq0238491)",
         "entityidfiltertype": "regex",
         "debugenabled": false,
-        "constraints": [
-            {
-                "targetType": "this_entity",
-                "targetValue": "",
-                "propertyType": "property",
-                "comparatorType": ">",
-                "comparatorValueDatatype": "num",
-                "comparatorValue": "5",
-                "propertyValue": "new_state.attributes.valve"
-            }
-        ],
-        "outputs": 2,
         "customoutputs": [],
         "outputinitially": false,
         "state_type": "str",
@@ -466,20 +491,8 @@
         "z": "c1aba6ca.ae591",
         "name": "living room heating inactive",
         "server": "b559dfa2.ecc5b8",
-        "exposeToHomeAssistant": false,
-        "haConfig": [
-            {
-                "property": "name",
-                "value": ""
-            },
-            {
-                "property": "icon",
-                "value": ""
-            }
-        ],
-        "entityid": "climate.(neq1411046|neq1411004|oeq0238491)",
-        "entityidfiltertype": "regex",
-        "debugenabled": false,
+        "inputs": 0,
+        "outputs": 2,
         "constraints": [
             {
                 "targetType": "entity_id",
@@ -509,7 +522,20 @@
                 "propertyValue": "attributes.valve"
             }
         ],
-        "outputs": 2,
+        "exposeToHomeAssistant": false,
+        "haConfig": [
+            {
+                "property": "name",
+                "value": ""
+            },
+            {
+                "property": "icon",
+                "value": ""
+            }
+        ],
+        "entityid": "climate.(neq1411046|neq1411004|oeq0238491)",
+        "entityidfiltertype": "regex",
+        "debugenabled": false,
         "customoutputs": [],
         "outputinitially": false,
         "state_type": "str",
@@ -584,20 +610,8 @@
         "z": "c1aba6ca.ae591",
         "name": "master bed room heating active",
         "server": "b559dfa2.ecc5b8",
-        "exposeToHomeAssistant": false,
-        "haConfig": [
-            {
-                "property": "name",
-                "value": ""
-            },
-            {
-                "property": "icon",
-                "value": ""
-            }
-        ],
-        "entityid": "climate.(neq1413070|oeq0238454|neq1411004|oeq0238491)",
-        "entityidfiltertype": "regex",
-        "debugenabled": false,
+        "inputs": 0,
+        "outputs": 2,
         "constraints": [
             {
                 "targetType": "this_entity",
@@ -609,7 +623,20 @@
                 "propertyValue": "new_state.attributes.valve"
             }
         ],
-        "outputs": 2,
+        "exposeToHomeAssistant": false,
+        "haConfig": [
+            {
+                "property": "name",
+                "value": ""
+            },
+            {
+                "property": "icon",
+                "value": ""
+            }
+        ],
+        "entityid": "climate.(neq1413070|oeq0238454)",
+        "entityidfiltertype": "regex",
+        "debugenabled": false,
         "customoutputs": [],
         "outputinitially": false,
         "state_type": "str",
@@ -668,20 +695,8 @@
         "z": "c1aba6ca.ae591",
         "name": "master bed room heating inactive",
         "server": "b559dfa2.ecc5b8",
-        "exposeToHomeAssistant": false,
-        "haConfig": [
-            {
-                "property": "name",
-                "value": ""
-            },
-            {
-                "property": "icon",
-                "value": ""
-            }
-        ],
-        "entityid": "climate.(neq1413070|oeq0238454)",
-        "entityidfiltertype": "regex",
-        "debugenabled": false,
+        "inputs": 0,
+        "outputs": 2,
         "constraints": [
             {
                 "targetType": "entity_id",
@@ -702,7 +717,20 @@
                 "propertyValue": "attributes.valve"
             }
         ],
-        "outputs": 2,
+        "exposeToHomeAssistant": false,
+        "haConfig": [
+            {
+                "property": "name",
+                "value": ""
+            },
+            {
+                "property": "icon",
+                "value": ""
+            }
+        ],
+        "entityid": "climate.(neq1413070|oeq0238454)",
+        "entityidfiltertype": "regex",
+        "debugenabled": false,
         "customoutputs": [],
         "outputinitially": false,
         "state_type": "str",
@@ -777,6 +805,19 @@
         "z": "c1aba6ca.ae591",
         "name": "kids bed room heating active",
         "server": "b559dfa2.ecc5b8",
+        "inputs": 0,
+        "outputs": 2,
+        "constraints": [
+            {
+                "targetType": "this_entity",
+                "targetValue": "",
+                "propertyType": "property",
+                "comparatorType": ">",
+                "comparatorValueDatatype": "num",
+                "comparatorValue": "5",
+                "propertyValue": "new_state.attributes.valve"
+            }
+        ],
         "exposeToHomeAssistant": false,
         "haConfig": [
             {
@@ -791,18 +832,6 @@
         "entityid": "climate.oeq0238216",
         "entityidfiltertype": "regex",
         "debugenabled": false,
-        "constraints": [
-            {
-                "targetType": "this_entity",
-                "targetValue": "",
-                "propertyType": "property",
-                "comparatorType": ">",
-                "comparatorValueDatatype": "num",
-                "comparatorValue": "5",
-                "propertyValue": "new_state.attributes.valve"
-            }
-        ],
-        "outputs": 2,
         "customoutputs": [],
         "outputinitially": false,
         "state_type": "str",
@@ -919,6 +948,19 @@
         "z": "c1aba6ca.ae591",
         "name": "attic heating active",
         "server": "b559dfa2.ecc5b8",
+        "inputs": 0,
+        "outputs": 2,
+        "constraints": [
+            {
+                "targetType": "this_entity",
+                "targetValue": "",
+                "propertyType": "property",
+                "comparatorType": ">",
+                "comparatorValueDatatype": "num",
+                "comparatorValue": "5",
+                "propertyValue": "new_state.attributes.valve"
+            }
+        ],
         "exposeToHomeAssistant": false,
         "haConfig": [
             {
@@ -933,18 +975,6 @@
         "entityid": "climate.oeq0238497",
         "entityidfiltertype": "regex",
         "debugenabled": false,
-        "constraints": [
-            {
-                "targetType": "this_entity",
-                "targetValue": "",
-                "propertyType": "property",
-                "comparatorType": ">",
-                "comparatorValueDatatype": "num",
-                "comparatorValue": "5",
-                "propertyValue": "new_state.attributes.valve"
-            }
-        ],
-        "outputs": 2,
         "customoutputs": [],
         "outputinitially": false,
         "state_type": "str",
@@ -1069,15 +1099,15 @@
         "server": "b559dfa2.ecc5b8",
         "version": 1,
         "debugenabled": false,
-        "service_domain": "climate",
-        "service": "set_temperature",
         "entityId": "",
         "data": "",
         "dataType": "jsonata",
-        "mergecontext": "",
+        "mustacheAltTags": false,
+        "service": "set_temperature",
         "output_location": "",
         "output_location_type": "none",
-        "mustacheAltTags": false,
+        "service_domain": "climate",
+        "mergecontext": "",
         "x": 1060,
         "y": 900,
         "wires": [
@@ -1192,15 +1222,15 @@
         "server": "b559dfa2.ecc5b8",
         "version": 1,
         "debugenabled": false,
-        "service_domain": "climate",
-        "service": "set_hvac_mode",
         "entityId": "",
         "data": "",
         "dataType": "jsonata",
-        "mergecontext": "",
+        "mustacheAltTags": false,
+        "service": "set_hvac_mode",
         "output_location": "",
         "output_location_type": "none",
-        "mustacheAltTags": false,
+        "service_domain": "climate",
+        "mergecontext": "",
         "x": 1040,
         "y": 1040,
         "wires": [
@@ -1286,332 +1316,6 @@
         "x": 420,
         "y": 1160,
         "wires": []
-    },
-    {
-        "id": "694b867b.20adc8",
-        "type": "server-state-changed",
-        "z": "553bfbb.b5eaa84",
-        "name": "reward toggles",
-        "server": "b559dfa2.ecc5b8",
-        "version": 1,
-        "exposeToHomeAssistant": false,
-        "haConfig": [
-            {
-                "property": "name",
-                "value": ""
-            },
-            {
-                "property": "icon",
-                "value": ""
-            }
-        ],
-        "entityidfilter": "input_boolean\\.(enzo|nolan)_.*",
-        "entityidfiltertype": "regex",
-        "outputinitially": false,
-        "state_type": "str",
-        "haltifstate": "",
-        "halt_if_type": "str",
-        "halt_if_compare": "is",
-        "outputs": 1,
-        "output_only_on_state_change": true,
-        "for": 0,
-        "forType": "num",
-        "forUnits": "minutes",
-        "ignorePrevStateNull": false,
-        "ignorePrevStateUnknown": false,
-        "ignorePrevStateUnavailable": false,
-        "ignoreCurrentStateUnknown": false,
-        "ignoreCurrentStateUnavailable": false,
-        "x": 160,
-        "y": 100,
-        "wires": [
-            [
-                "414f21e0.5601a"
-            ]
-        ]
-    },
-    {
-        "id": "f41f0f7a.fc4eb",
-        "type": "api-call-service",
-        "z": "553bfbb.b5eaa84",
-        "name": "increment/decrement",
-        "server": "b559dfa2.ecc5b8",
-        "version": 1,
-        "debugenabled": false,
-        "service_domain": "counter",
-        "service": "",
-        "entityId": "",
-        "data": "",
-        "dataType": "jsonata",
-        "mergecontext": "",
-        "output_location": "",
-        "output_location_type": "none",
-        "mustacheAltTags": false,
-        "x": 1040,
-        "y": 100,
-        "wires": [
-            []
-        ]
-    },
-    {
-        "id": "414f21e0.5601a",
-        "type": "gate",
-        "z": "553bfbb.b5eaa84",
-        "name": "",
-        "controlTopic": "control",
-        "defaultState": "open",
-        "openCmd": "open",
-        "closeCmd": "close",
-        "toggleCmd": "toggle",
-        "defaultCmd": "default",
-        "statusCmd": "status",
-        "persist": false,
-        "x": 370,
-        "y": 100,
-        "wires": [
-            [
-                "afc25dc3.bdf818"
-            ]
-        ]
-    },
-    {
-        "id": "afc25dc3.bdf818",
-        "type": "change",
-        "z": "553bfbb.b5eaa84",
-        "name": "set counter action",
-        "rules": [
-            {
-                "t": "set",
-                "p": "payload",
-                "pt": "msg",
-                "to": "(\t    $repititions := $contains(msg.topic, \"plus_five\") ? 4 : 0;\t    $element := function($x) {({\t        $string($x): {\t            'service': msg.payload=\"on\" ? \"increment\" : \"decrement\",\t            'data': {\t                'entity_id': $contains(msg.topic, \"enzo\") ? \"counter.enzo_robux\" : \"counter.nolan_robux\"\t                }\t            }\t    })};\t    $merge($map([0..$repititions], $element))\t)",
-                "tot": "jsonata"
-            }
-        ],
-        "action": "",
-        "property": "",
-        "from": "",
-        "to": "",
-        "reg": false,
-        "x": 570,
-        "y": 100,
-        "wires": [
-            [
-                "1555f232.ea9f8e"
-            ]
-        ]
-    },
-    {
-        "id": "ee90b4aa.b4bd18",
-        "type": "debug",
-        "z": "553bfbb.b5eaa84",
-        "name": "",
-        "active": false,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "true",
-        "targetType": "full",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 990,
-        "y": 40,
-        "wires": []
-    },
-    {
-        "id": "2c394c14.0ddbdc",
-        "type": "inject",
-        "z": "553bfbb.b5eaa84",
-        "name": "trigger at midnight",
-        "props": [
-            {
-                "p": "payload"
-            },
-            {
-                "p": "topic",
-                "vt": "str"
-            }
-        ],
-        "repeat": "",
-        "crontab": "00 00 * * *",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "control",
-        "payload": "close",
-        "payloadType": "str",
-        "x": 180,
-        "y": 240,
-        "wires": [
-            [
-                "414f21e0.5601a",
-                "f5676d4b.5d2c"
-            ]
-        ]
-    },
-    {
-        "id": "f5676d4b.5d2c",
-        "type": "delay",
-        "z": "553bfbb.b5eaa84",
-        "name": "",
-        "pauseType": "delay",
-        "timeout": "2",
-        "timeoutUnits": "seconds",
-        "rate": "1",
-        "nbRateUnits": "1",
-        "rateUnits": "second",
-        "randomFirst": "1",
-        "randomLast": "5",
-        "randomUnits": "seconds",
-        "drop": false,
-        "outputs": 1,
-        "x": 420,
-        "y": 240,
-        "wires": [
-            [
-                "64685608.232ca"
-            ]
-        ]
-    },
-    {
-        "id": "64685608.232ca",
-        "type": "change",
-        "z": "553bfbb.b5eaa84",
-        "name": "create switch off commands",
-        "rules": [
-            {
-                "t": "set",
-                "p": "payload",
-                "pt": "msg",
-                "to": "{\"enzo_shoes\":{\"service\":\"turn_off\",\"data\":{\"entity_id\":\"input_boolean.enzo_shoes\"}},\"enzo_clothes\":{\"service\":\"turn_off\",\"data\":{\"entity_id\":\"input_boolean.enzo_clothes\"}},\"enzo_devices\":{\"service\":\"turn_off\",\"data\":{\"entity_id\":\"input_boolean.enzo_devices\"}},\"enzo_dinner\":{\"service\":\"turn_off\",\"data\":{\"entity_id\":\"input_boolean.enzo_dinner\"}},\"enzo_teethbrushing\":{\"service\":\"turn_off\",\"data\":{\"entity_id\":\"input_boolean.enzo_toothbrush\"}},\"enzo_shower\":{\"service\":\"turn_off\",\"data\":{\"entity_id\":\"input_boolean.enzo_shower\"}},\"enzo_table\":{\"service\":\"turn_off\",\"data\":{\"entity_id\":\"input_boolean.enzo_table\"}},\"enzo_backpack\":{\"service\":\"turn_off\",\"data\":{\"entity_id\":\"input_boolean.enzo_backpack\"}},\"enzo_extra\":{\"service\":\"turn_off\",\"data\":{\"entity_id\":\"input_boolean.enzo_extra\"}},\"enzo_homework\":{\"service\":\"turn_off\",\"data\":{\"entity_id\":\"input_boolean.enzo_homework\"}},\"enzo_walk\":{\"service\":\"turn_off\",\"data\":{\"entity_id\":\"input_boolean.enzo_walk\"}},\"enzo_boardgames\":{\"service\":\"turn_off\",\"data\":{\"entity_id\":\"input_boolean.enzo_boardgames\"}},\"enzo_plus_five\":{\"service\":\"turn_off\",\"data\":{\"entity_id\":\"input_boolean.enzo_plus_five\"}},\"nolan_shoes\":{\"service\":\"turn_off\",\"data\":{\"entity_id\":\"input_boolean.nolan_shoes\"}},\"nolan_clothes\":{\"service\":\"turn_off\",\"data\":{\"entity_id\":\"input_boolean.nolan_clothes\"}},\"nolan_devices\":{\"service\":\"turn_off\",\"data\":{\"entity_id\":\"input_boolean.nolan_devices\"}},\"nolan_dinner\":{\"service\":\"turn_off\",\"data\":{\"entity_id\":\"input_boolean.nolan_dinner\"}},\"nolan_teethbrushing\":{\"service\":\"turn_off\",\"data\":{\"entity_id\":\"input_boolean.nolan_toothbrush\"}},\"nolan_shower\":{\"service\":\"turn_off\",\"data\":{\"entity_id\":\"input_boolean.nolan_shower\"}},\"nolan_table\":{\"service\":\"turn_off\",\"data\":{\"entity_id\":\"input_boolean.nolan_table\"}},\"nolan_backpack\":{\"service\":\"turn_off\",\"data\":{\"entity_id\":\"input_boolean.nolan_backpack\"}},\"nolan_extra\":{\"service\":\"turn_off\",\"data\":{\"entity_id\":\"input_boolean.nolan_extra\"}},\"nolan_homework\":{\"service\":\"turn_off\",\"data\":{\"entity_id\":\"input_boolean.nolan_homework\"}},\"nolan_walk\":{\"service\":\"turn_off\",\"data\":{\"entity_id\":\"input_boolean.nolan_walk\"}},\"nolan_boardgames\":{\"service\":\"turn_off\",\"data\":{\"entity_id\":\"input_boolean.nolan_boardgames\"}},\"nolan_plus_five\":{\"service\":\"turn_off\",\"data\":{\"entity_id\":\"input_boolean.nolan_plus_five\"}}}",
-                "tot": "json"
-            }
-        ],
-        "action": "",
-        "property": "",
-        "from": "",
-        "to": "",
-        "reg": false,
-        "x": 660,
-        "y": 240,
-        "wires": [
-            [
-                "d92b09f3.964bb8",
-                "e63405fb.40889"
-            ]
-        ]
-    },
-    {
-        "id": "d92b09f3.964bb8",
-        "type": "split",
-        "z": "553bfbb.b5eaa84",
-        "name": "",
-        "splt": "\\n",
-        "spltType": "str",
-        "arraySplt": 1,
-        "arraySpltType": "len",
-        "stream": false,
-        "addname": "",
-        "x": 910,
-        "y": 280,
-        "wires": [
-            [
-                "6ef17aed.bd450c"
-            ]
-        ]
-    },
-    {
-        "id": "6ef17aed.bd450c",
-        "type": "api-call-service",
-        "z": "553bfbb.b5eaa84",
-        "name": "switch off",
-        "server": "b559dfa2.ecc5b8",
-        "version": 1,
-        "debugenabled": false,
-        "service_domain": "input_boolean",
-        "service": "",
-        "entityId": "",
-        "data": "",
-        "dataType": "jsonata",
-        "mergecontext": "",
-        "output_location": "",
-        "output_location_type": "none",
-        "mustacheAltTags": false,
-        "x": 1120,
-        "y": 280,
-        "wires": [
-            []
-        ]
-    },
-    {
-        "id": "b23cd75f.da13",
-        "type": "delay",
-        "z": "553bfbb.b5eaa84",
-        "name": "",
-        "pauseType": "delay",
-        "timeout": "5",
-        "timeoutUnits": "seconds",
-        "rate": "1",
-        "nbRateUnits": "1",
-        "rateUnits": "second",
-        "randomFirst": "1",
-        "randomLast": "5",
-        "randomUnits": "seconds",
-        "drop": false,
-        "outputs": 1,
-        "x": 1120,
-        "y": 200,
-        "wires": [
-            [
-                "414f21e0.5601a"
-            ]
-        ]
-    },
-    {
-        "id": "e63405fb.40889",
-        "type": "change",
-        "z": "553bfbb.b5eaa84",
-        "name": "open gate",
-        "rules": [
-            {
-                "t": "set",
-                "p": "payload",
-                "pt": "msg",
-                "to": "open",
-                "tot": "str"
-            }
-        ],
-        "action": "",
-        "property": "",
-        "from": "",
-        "to": "",
-        "reg": false,
-        "x": 930,
-        "y": 200,
-        "wires": [
-            [
-                "b23cd75f.da13"
-            ]
-        ]
-    },
-    {
-        "id": "1555f232.ea9f8e",
-        "type": "split",
-        "z": "553bfbb.b5eaa84",
-        "name": "",
-        "splt": "\\n",
-        "spltType": "str",
-        "arraySplt": 1,
-        "arraySpltType": "len",
-        "stream": false,
-        "addname": "",
-        "x": 770,
-        "y": 100,
-        "wires": [
-            [
-                "ee90b4aa.b4bd18",
-                "f41f0f7a.fc4eb"
-            ]
-        ]
     },
     {
         "id": "5298883b.63d67",
@@ -3198,7 +2902,7 @@
         "type": "function",
         "z": "4aa3e13d.f801b",
         "name": "flow calculations",
-        "func": "let payload = msg.payload;\n\nlet solar_export_power = payload.pv1_power + payload.pv2_power;\nlet house_import_power = payload.critical_loads_active_power;\nlet grid_export_power = 0;\nlet grid_import_power = 0;\nlet battery_import_power = 0;\nlet battery_export_power = 0;\n\nif (payload.battery_power < 0) {\n    battery_import_power = -payload.battery_power;\n} else {\n    battery_export_power = payload.battery_power;\n}\n\nif (payload.external_watt_meter_grid_active_power < 0) {\n    grid_import_power = -payload.external_watt_meter_grid_active_power;\n} else {\n    grid_export_power = payload.external_watt_meter_grid_active_power;\n}\n\n// flows\nlet grid_to_battery_power = 0;\nlet grid_to_house_power = 0;\nlet battery_to_house_power = 0;\nlet solar_to_house_power = 0;\nlet solar_to_battery_power = 0;\nlet solar_to_grid_power = 0;\n\n// isolated\nif (solar_export_power < house_import_power) {\n    solar_to_house_power = solar_export_power;\n    battery_to_house_power = battery_export_power;\n    grid_to_house_power = house_import_power - solar_to_house_power - battery_to_house_power;\n    grid_to_battery_power = battery_import_power;\n} else {\n    if (battery_export_power > 0 && grid_export_power > 0) {\n        solar_to_house_power = house_import_power - battery_export_power - grid_export_power;\n        grid_to_house_power = grid_export_power;\n        battery_to_house_power = battery_export_power;\n    } else if (battery_export_power > 0 && grid_import_power > 0) {\n        solar_to_house_power = house_import_power - battery_export_power;\n        battery_to_house_power = battery_export_power;\n        solar_to_grid_power = grid_import_power;\n    } else if (battery_import_power > 0 && grid_export_power > 0) {\n        if (grid_export_power > house_import_power) {\n            solar_to_house_power = house_import_power;\n            solar_to_battery_power = solar_export_power - solar_to_house_power;\n            grid_to_battery_power = grid_export_power;\n        } else {\n            solar_to_house_power = house_import_power - grid_export_power;\n            grid_to_house_power = grid_export_power;\n            solar_to_battery_power = battery_import_power;\n        }\n    } else if (battery_import_power > 0 && grid_import_power > 0) {\n        solar_to_house_power = house_import_power;\n        solar_to_battery_power = battery_import_power;\n        solar_to_grid_power = grid_import_power;\n    }\n}\n\n\nmsg.payload = {\n    \"energy/flow/solar_export_power\": solar_export_power,\n    \"energy/flow/house_import_power\": house_import_power,\n    \"energy/flow/battery_import_power\": battery_import_power,\n    \"energy/flow/battery_export_power\": battery_export_power,\n    \"energy/flow/grid_export_power\": grid_export_power,\n    \"energy/flow/grid_import_power\": grid_import_power,\n    \"energy/flow/grid_to_battery_power\": grid_to_battery_power,\n    \"energy/flow/grid_to_house_power\": grid_to_house_power,\n    \"energy/flow/battery_to_house_power\": battery_to_house_power,\n    \"energy/flow/solar_to_house_power\": solar_to_house_power,\n    \"energy/flow/solar_to_battery_power\": solar_to_battery_power,\n    \"energy/flow/solar_to_grid_power\": solar_to_grid_power,\n    \"energy/battery/soc\": payload.battery_soc\n};\n\nreturn msg;",
+        "func": "let payload = msg.payload;\n\nlet solar_export_power = payload.pv1_power + payload.pv2_power;\nlet house_import_power = payload.critical_loads_active_power;\nlet grid_export_power = 0;\nlet grid_import_power = 0;\nlet battery_import_power = 0;\nlet battery_export_power = 0;\n\nif (payload.battery_power < 0) {\n    battery_import_power = -payload.battery_power;\n} else {\n    battery_export_power = payload.battery_power;\n}\n\nif (payload.external_watt_meter_grid_active_power < 0) {\n    grid_import_power = -payload.external_watt_meter_grid_active_power;\n} else {\n    grid_export_power = payload.external_watt_meter_grid_active_power;\n}\n\n// flows\nlet grid_to_battery_power = 0;\nlet grid_to_house_power = 0;\nlet battery_to_house_power = 0;\nlet solar_to_house_power = 0;\nlet solar_to_battery_power = 0;\nlet solar_to_grid_power = 0;\n\n// isolated\nif (solar_export_power < house_import_power) {\n    solar_to_house_power = solar_export_power;\n    battery_to_house_power = battery_export_power;\n    grid_to_house_power = house_import_power - solar_to_house_power - battery_to_house_power;\n    grid_to_battery_power = battery_import_power;\n} else {\n    if (battery_export_power > 0 && grid_export_power > 0) {\n        solar_to_house_power = house_import_power - battery_export_power - grid_export_power;\n        grid_to_house_power = grid_export_power;\n        battery_to_house_power = battery_export_power;\n    } else if (battery_export_power > 0 && grid_import_power > 0) {\n        solar_to_house_power = house_import_power - battery_export_power;\n        battery_to_house_power = battery_export_power;\n        solar_to_grid_power = grid_import_power;\n    } else if (battery_import_power > 0 && grid_export_power > 0) {\n        if (grid_export_power > house_import_power) {\n            solar_to_house_power = house_import_power;\n            solar_to_battery_power = solar_export_power - solar_to_house_power;\n            grid_to_battery_power = grid_export_power;\n        } else {\n            solar_to_house_power = house_import_power - grid_export_power;\n            grid_to_house_power = grid_export_power;\n            solar_to_battery_power = battery_import_power;\n        }\n    } else if (battery_import_power > 0 && grid_import_power > 0) {\n        solar_to_house_power = house_import_power;\n        solar_to_battery_power = battery_import_power;\n        solar_to_grid_power = grid_import_power;\n    }\n}\n\n\n// Signed net values for the power-flow-card-plus diagram. The card expects one\n// signed entity per node: negative = production, positive = consumption.\nlet grid_net_power = grid_to_house_power + grid_to_battery_power - solar_to_grid_power; // + = importing\nlet battery_net_power = battery_import_power - battery_export_power;                    // + = charging\nlet solar_total_power = solar_export_power;                                             // pv1_power + pv2_power\n\nmsg.payload = {\n    \"energy/flow/solar_export_power\": solar_export_power,\n    \"energy/flow/house_import_power\": house_import_power,\n    \"energy/flow/battery_import_power\": battery_import_power,\n    \"energy/flow/battery_export_power\": battery_export_power,\n    \"energy/flow/grid_export_power\": grid_export_power,\n    \"energy/flow/grid_import_power\": grid_import_power,\n    \"energy/flow/grid_to_battery_power\": grid_to_battery_power,\n    \"energy/flow/grid_to_house_power\": grid_to_house_power,\n    \"energy/flow/battery_to_house_power\": battery_to_house_power,\n    \"energy/flow/solar_to_house_power\": solar_to_house_power,\n    \"energy/flow/solar_to_battery_power\": solar_to_battery_power,\n    \"energy/flow/solar_to_grid_power\": solar_to_grid_power,\n    \"energy/flow/grid_net_power\": grid_net_power,\n    \"energy/flow/battery_net_power\": battery_net_power,\n    \"energy/flow/solar_total_power\": solar_total_power,\n    \"energy/battery/soc\": payload.battery_soc\n};\n\nreturn msg;",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
@@ -3266,6 +2970,61 @@
         "bucket": "bucket",
         "x": 890,
         "y": 160,
+        "wires": []
+    },
+    {
+        "id": "e41971ada8e0ce45",
+        "type": "mqtt in",
+        "z": "4aa3e13d.f801b",
+        "name": "bms",
+        "topic": "energy/bms",
+        "qos": "0",
+        "datatype": "json",
+        "broker": "d03b4f35.65271",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 150,
+        "y": 520,
+        "wires": [
+            [
+                "e8fa5bd1c8435b71",
+                "dd4d714e9c5608d3"
+            ]
+        ]
+    },
+    {
+        "id": "e8fa5bd1c8435b71",
+        "type": "influxdb batch",
+        "z": "4aa3e13d.f801b",
+        "influxdb": "636cb567.cfe544",
+        "precision": "",
+        "retentionPolicy": "",
+        "name": "bms influx",
+        "database": "database",
+        "precisionV18FluxV20": "ms",
+        "retentionPolicyV18Flux": "",
+        "org": "organisation",
+        "bucket": "bucket",
+        "x": 340,
+        "y": 520,
+        "wires": []
+    },
+    {
+        "id": "dd4d714e9c5608d3",
+        "type": "debug",
+        "z": "4aa3e13d.f801b",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 440,
+        "y": 560,
         "wires": []
     },
     {
@@ -3467,7 +3226,7 @@
         "id": "9ef45b0dc159052a",
         "type": "cronplus",
         "z": "ea8eb34daf89c9a3",
-        "name": "Export price",
+        "name": "Export/Import price",
         "outputField": "payload",
         "timeZone": "Europe/Madrid",
         "persistDynamic": false,
@@ -3475,36 +3234,60 @@
         "outputs": 1,
         "options": [
             {
-                "name": "off-peak week",
+                "name": "P3 week",
                 "topic": "energy/price/export",
                 "payloadType": "num",
-                "payload": "0.133565",
+                "payload": "0.085",
                 "expressionType": "cron",
-                "expression": "0 0 0-11,23 * * 1-5 *",
+                "expression": "0 0 0-7 * * 1-5 *",
                 "location": "",
                 "offset": "0",
                 "solarType": "all",
                 "solarEvents": "sunrise,sunset"
             },
             {
-                "name": "peak week",
+                "name": "P2 week",
                 "topic": "energy/price/export",
                 "payloadType": "num",
-                "payload": "0.191362",
+                "payload": "0.134",
                 "expressionType": "cron",
-                "expression": "0 0 12-22 * * 1-5 *",
+                "expression": "0 0 8-9,14-17,22-23 * * 1-5 *",
                 "location": "",
                 "offset": "0",
                 "solarType": "all",
                 "solarEvents": "sunrise,sunset"
             },
             {
-                "name": "off-peak weekend",
+                "name": "P1 week",
                 "topic": "energy/price/export",
                 "payloadType": "num",
-                "payload": "0.133565",
+                "payload": "0.182",
+                "expressionType": "cron",
+                "expression": "0 0 10-13,18-21 * * 1-5 *",
+                "location": "",
+                "offset": "0",
+                "solarType": "all",
+                "solarEvents": "sunrise,sunset"
+            },
+            {
+                "name": "P3 weekend",
+                "topic": "energy/price/export",
+                "payloadType": "num",
+                "payload": "0.085",
                 "expressionType": "cron",
                 "expression": "0 0 * * * 6,7 *",
+                "location": "",
+                "offset": "0",
+                "solarType": "all",
+                "solarEvents": "sunrise,sunset"
+            },
+            {
+                "name": "Excess",
+                "topic": "energy/price/import",
+                "payloadType": "num",
+                "payload": "0.080",
+                "expressionType": "cron",
+                "expression": "0 0 * * * * *",
                 "location": "",
                 "offset": "0",
                 "solarType": "all",
@@ -3523,6 +3306,7 @@
         "id": "737f091b677fea8e",
         "type": "influxdb in",
         "z": "ea8eb34daf89c9a3",
+        "d": true,
         "influxdb": "636cb567.cfe544",
         "name": "",
         "query": "",
@@ -3543,6 +3327,7 @@
         "id": "48518b5c8af7b95c",
         "type": "cronplus",
         "z": "ea8eb34daf89c9a3",
+        "d": true,
         "name": "Import price",
         "outputField": "payload",
         "timeZone": "Europe/Madrid",
@@ -3575,6 +3360,7 @@
         "id": "d4a23d7e9772a27a",
         "type": "change",
         "z": "ea8eb34daf89c9a3",
+        "d": true,
         "name": "Construct query",
         "rules": [
             {
@@ -3602,6 +3388,7 @@
         "id": "7942b17e3ea3da20",
         "type": "debug",
         "z": "ea8eb34daf89c9a3",
+        "d": true,
         "name": "",
         "active": true,
         "tosidebar": true,
@@ -3619,6 +3406,7 @@
         "id": "755cfffa3e97e4f0",
         "type": "change",
         "z": "ea8eb34daf89c9a3",
+        "d": true,
         "name": "Update payload",
         "rules": [
             {
@@ -3646,10 +3434,11 @@
         "id": "7108b2bc685f126c",
         "type": "mqtt out",
         "z": "ea8eb34daf89c9a3",
+        "d": true,
         "name": "energy/price/import",
         "topic": "",
         "qos": "",
-        "retain": "",
+        "retain": "true",
         "respTopic": "",
         "contentType": "",
         "userProps": "",
@@ -3664,17 +3453,17 @@
         "id": "9f4c053dd2bc17c5",
         "type": "mqtt out",
         "z": "ea8eb34daf89c9a3",
-        "name": "energy/price/export",
+        "name": "energy/price",
         "topic": "",
         "qos": "",
-        "retain": "",
+        "retain": "true",
         "respTopic": "",
         "contentType": "",
         "userProps": "",
         "correl": "",
         "expiry": "",
         "broker": "d03b4f35.65271",
-        "x": 490,
+        "x": 470,
         "y": 440,
         "wires": []
     },
@@ -3711,8 +3500,8 @@
         "id": "6608ecf575d34bac",
         "type": "debug",
         "z": "3daecb3a84194248",
-        "name": "",
-        "active": true,
+        "name": "after",
+        "active": false,
         "tosidebar": true,
         "console": false,
         "tostatus": false,
@@ -3720,8 +3509,8 @@
         "targetType": "full",
         "statusVal": "",
         "statusType": "auto",
-        "x": 1470,
-        "y": 120,
+        "x": 1490,
+        "y": 100,
         "wires": []
     },
     {
@@ -3732,12 +3521,13 @@
         "ip": "sip.lanquarden.com",
         "port": "5038",
         "user": "",
-        "events": "Newexten,Hangup",
+        "events": "Newchannel,NewConnectedLine,Hangup",
         "x": 320,
         "y": 200,
         "wires": [
             [
-                "43b2412a7599340e"
+                "43b2412a7599340e",
+                "c9868962ebc0e9cb"
             ],
             []
         ]
@@ -3778,7 +3568,7 @@
         "rules": [
             {
                 "t": "jsonata_exp",
-                "v": "payload.channelstatedesc = \"Ring\" and\tpayload.calleridnum = \"20\" and\tpayload.exten = \"50\"",
+                "v": "payload.event = \"Newchannel\" and\tpayload.calleridnum = \"20\" and\tpayload.exten = \"50\"",
                 "vt": "jsonata"
             },
             {
@@ -3794,10 +3584,12 @@
         "y": 200,
         "wires": [
             [
-                "9ac74e7fbb44a96c"
+                "9ac74e7fbb44a96c",
+                "616a519cd7315a09"
             ],
             [
-                "f62e6016c23653c6"
+                "f62e6016c23653c6",
+                "46cf68bbcb66733a"
             ]
         ]
     },
@@ -3871,7 +3663,8 @@
         "y": 200,
         "wires": [
             [
-                "e883ae6cf35d4b17"
+                "e883ae6cf35d4b17",
+                "833861e13b39feb7"
             ]
         ]
     },
@@ -3879,20 +3672,20 @@
         "id": "2fba9f0d156f36d5",
         "type": "api-call-service",
         "z": "3daecb3a84194248",
-        "name": "play ring tone",
+        "name": "popup video feed",
         "server": "b559dfa2.ecc5b8",
         "version": 1,
         "debugenabled": false,
-        "service_domain": "media_player",
-        "service": "play_media",
-        "entityId": "media_player.mopidy",
-        "data": "{\"entity_id\":\"media_player.mopidy\",\"media_content_id\":\"local:track:The%20White%20Stripes/Get%20Behind%20Me%20Satan/03%20-%20My%20Doorbell.mp3\",\"media_content_type\":\"music\"}",
+        "entityId": "",
+        "data": "{\"dismissable\":true,\"size\":\"wide\",\"title\":\"Doorbell\",\"timeout\":120000,\"deviceID\":[\"dashboard\"],\"left_button\":\"Open door\",\"left_button_action\":{\"service\":\"shell_command.open_outside_door\"},\"content\":{\"type\":\"custom:frigate-card\",\"cameras\":[{\"camera_entity\":\"camera.doorbell\",\"live_provider\":\"go2rtc\",\"go2rtc\":{\"modes\":[\"mse\"],\"stream\":\"doorbell_hq\"}}]}}",
         "dataType": "json",
-        "mergecontext": "",
+        "mustacheAltTags": false,
+        "service": "popup",
         "output_location": "payload",
         "output_location_type": "none",
-        "mustacheAltTags": false,
-        "x": 1620,
+        "service_domain": "browser_mod",
+        "mergecontext": "",
+        "x": 1630,
         "y": 240,
         "wires": [
             []
@@ -3919,8 +3712,8 @@
         "topic": "control",
         "payload": "open",
         "payloadType": "str",
-        "x": 1040,
-        "y": 360,
+        "x": 1050,
+        "y": 340,
         "wires": [
             [
                 "0eaeaebd8a6c7724"
@@ -3949,7 +3742,7 @@
         "payload": "close",
         "payloadType": "str",
         "x": 1050,
-        "y": 420,
+        "y": 400,
         "wires": [
             [
                 "0eaeaebd8a6c7724"
@@ -3978,153 +3771,11 @@
         ]
     },
     {
-        "id": "b464bbaa.5be868",
-        "type": "gate",
-        "z": "449c915c4d2b36cc",
-        "name": "gate demo",
-        "controlTopic": "control",
-        "defaultState": "open",
-        "openCmd": "open",
-        "closeCmd": "close",
-        "toggleCmd": "toggle",
-        "defaultCmd": "default",
-        "statusCmd": "status",
-        "persist": false,
-        "x": 1030,
-        "y": 240,
-        "wires": [
-            [
-                "8ba20475.bd1c28"
-            ]
-        ]
-    },
-    {
-        "id": "f61b4c1c.d6f8",
-        "type": "inject",
-        "z": "449c915c4d2b36cc",
-        "name": "input",
-        "repeat": "",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "",
-        "payload": "",
-        "payloadType": "date",
-        "x": 730,
-        "y": 240,
-        "wires": [
-            [
-                "b464bbaa.5be868"
-            ]
-        ]
-    },
-    {
-        "id": "57c0705e.2b648",
-        "type": "inject",
-        "z": "449c915c4d2b36cc",
-        "name": "open",
-        "props": [
-            {
-                "p": "payload",
-                "v": "open",
-                "vt": "str"
-            },
-            {
-                "p": "topic",
-                "v": "control",
-                "vt": "str"
-            }
-        ],
-        "repeat": "",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "control",
-        "payload": "open",
-        "payloadType": "str",
-        "x": 830,
-        "y": 140,
-        "wires": [
-            [
-                "b464bbaa.5be868"
-            ]
-        ]
-    },
-    {
-        "id": "e56d6ef2.db15b8",
-        "type": "inject",
-        "z": "449c915c4d2b36cc",
-        "name": "close",
-        "repeat": "",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "control",
-        "payload": "close",
-        "payloadType": "str",
-        "x": 830,
-        "y": 180,
-        "wires": [
-            [
-                "b464bbaa.5be868"
-            ]
-        ]
-    },
-    {
-        "id": "310d032f.aa197c",
-        "type": "inject",
-        "z": "449c915c4d2b36cc",
-        "name": "toggle",
-        "repeat": "",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "control",
-        "payload": "toggle",
-        "payloadType": "str",
-        "x": 830,
-        "y": 300,
-        "wires": [
-            [
-                "b464bbaa.5be868"
-            ]
-        ]
-    },
-    {
-        "id": "c5e19f28.1e37d",
-        "type": "inject",
-        "z": "449c915c4d2b36cc",
-        "name": "reset",
-        "props": [
-            {
-                "p": "payload"
-            },
-            {
-                "p": "topic",
-                "vt": "str"
-            }
-        ],
-        "repeat": "",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "control",
-        "payload": "default",
-        "payloadType": "str",
-        "x": 830,
-        "y": 340,
-        "wires": [
-            [
-                "b464bbaa.5be868"
-            ]
-        ]
-    },
-    {
-        "id": "8ba20475.bd1c28",
+        "id": "616a519cd7315a09",
         "type": "debug",
-        "z": "449c915c4d2b36cc",
-        "name": "output",
-        "active": true,
+        "z": "3daecb3a84194248",
+        "name": "ringing events",
+        "active": false,
         "tosidebar": true,
         "console": false,
         "tostatus": false,
@@ -4132,15 +3783,113 @@
         "targetType": "full",
         "statusVal": "",
         "statusType": "auto",
-        "x": 1170,
-        "y": 240,
+        "x": 820,
+        "y": 60,
         "wires": []
     },
     {
-        "id": "7f423eb5.3d6508",
+        "id": "46cf68bbcb66733a",
+        "type": "debug",
+        "z": "3daecb3a84194248",
+        "name": "hanging up events",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 810,
+        "y": 340,
+        "wires": []
+    },
+    {
+        "id": "833861e13b39feb7",
+        "type": "debug",
+        "z": "3daecb3a84194248",
+        "name": "changes",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1190,
+        "y": 80,
+        "wires": []
+    },
+    {
+        "id": "c9868962ebc0e9cb",
+        "type": "debug",
+        "z": "3daecb3a84194248",
+        "name": "raw asterisk",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 540,
+        "y": 60,
+        "wires": []
+    },
+    {
+        "id": "239973de4fdab82b",
+        "type": "sun events",
+        "z": "449c915c4d2b36cc",
+        "testmode": false,
+        "verbose": "N",
+        "topic": "sunevent",
+        "name": "Dawn event",
+        "x": 730,
+        "y": 360,
+        "wires": [
+            [
+                "7817c50b62682f2d",
+                "32516b0e67f107bc"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "3bce84766ecea4a3",
         "type": "inject",
         "z": "449c915c4d2b36cc",
-        "name": "status",
+        "name": "24h trigger",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "00 12 * * *",
+        "once": true,
+        "onceDelay": 1,
+        "topic": "trigger",
+        "payload": "{\"latitude\":39.629091,\"longitude\":-0.415646}",
+        "payloadType": "json",
+        "x": 530,
+        "y": 360,
+        "wires": [
+            [
+                "239973de4fdab82b"
+            ]
+        ]
+    },
+    {
+        "id": "5e7926e899a90ec5",
+        "type": "inject",
+        "z": "449c915c4d2b36cc",
+        "name": "",
         "props": [
             {
                 "p": "payload"
@@ -4154,49 +3903,241 @@
         "crontab": "",
         "once": false,
         "onceDelay": 0.1,
-        "topic": "control",
-        "payload": "status",
-        "payloadType": "str",
-        "x": 830,
-        "y": 380,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 900,
+        "y": 220,
         "wires": [
             [
-                "b464bbaa.5be868"
+                "8e89c9d188f3f6ad"
             ]
         ]
     },
     {
-        "id": "516d9d16.30ddac",
-        "type": "status",
+        "id": "8e89c9d188f3f6ad",
+        "type": "api-call-service",
         "z": "449c915c4d2b36cc",
-        "name": "gate status",
-        "scope": [
-            "b464bbaa.5be868"
+        "name": "Close upstairs covers",
+        "server": "b559dfa2.ecc5b8",
+        "version": 1,
+        "debugenabled": false,
+        "entityId": "cover.su_east_north, cover.su_east_south, cover.su_west_north, cover.su_west_south, cover.su_west_west",
+        "data": "{}",
+        "dataType": "json",
+        "mustacheAltTags": false,
+        "service": "close_cover",
+        "output_location": "payload",
+        "output_location_type": "none",
+        "service_domain": "cover",
+        "mergecontext": "",
+        "x": 1180,
+        "y": 360,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "7817c50b62682f2d",
+        "type": "switch",
+        "z": "449c915c4d2b36cc",
+        "name": "Dawn",
+        "property": "payload.sunevent",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "dawn",
+                "vt": "str"
+            }
         ],
-        "x": 1020,
-        "y": 300,
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 930,
+        "y": 360,
         "wires": [
             [
-                "f66030c4.9dce28"
+                "8e89c9d188f3f6ad",
+                "1eb40d3b712dc38e"
             ]
         ]
     },
     {
-        "id": "f66030c4.9dce28",
+        "id": "32516b0e67f107bc",
         "type": "debug",
         "z": "449c915c4d2b36cc",
-        "name": "status text",
-        "active": true,
+        "name": "sun events",
+        "active": false,
         "tosidebar": true,
         "console": false,
         "tostatus": false,
-        "complete": "status.text",
-        "targetType": "msg",
+        "complete": "true",
+        "targetType": "full",
         "statusVal": "",
         "statusType": "auto",
-        "x": 1170,
-        "y": 300,
+        "x": 1010,
+        "y": 520,
         "wires": []
+    },
+    {
+        "id": "1eb40d3b712dc38e",
+        "type": "debug",
+        "z": "449c915c4d2b36cc",
+        "name": "filtered events",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1190,
+        "y": 460,
+        "wires": []
+    },
+    {
+        "id": "d863f6e02cdebc8b",
+        "type": "cronplus",
+        "z": "f9f76430cac568e2",
+        "name": "At midnight",
+        "outputField": "payload",
+        "timeZone": "",
+        "persistDynamic": false,
+        "commandResponseMsgOutput": "output1",
+        "outputs": 1,
+        "options": [
+            {
+                "name": "at midnight",
+                "topic": "pastis",
+                "payloadType": "default",
+                "payload": "",
+                "expressionType": "cron",
+                "expression": "0 0 0 * * * *",
+                "location": "",
+                "offset": "0",
+                "solarType": "all",
+                "solarEvents": "sunrise,sunset"
+            }
+        ],
+        "x": 210,
+        "y": 260,
+        "wires": [
+            [
+                "9cf31738e74643f9"
+            ]
+        ]
+    },
+    {
+        "id": "255dc0eb8a8a40cf",
+        "type": "api-call-service",
+        "z": "f9f76430cac568e2",
+        "name": "Uncomplete",
+        "server": "b559dfa2.ecc5b8",
+        "version": 1,
+        "debugenabled": false,
+        "entityId": "todo.pastis",
+        "data": "{\t    \"item\": msg.payload,\t    \"status\":\"needs_action\"\t}",
+        "dataType": "jsonata",
+        "mustacheAltTags": false,
+        "service": "update_item",
+        "output_location": "payload",
+        "output_location_type": "none",
+        "service_domain": "todo",
+        "mergecontext": "",
+        "x": 910,
+        "y": 260,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "86a113afe94124aa",
+        "type": "debug",
+        "z": "f9f76430cac568e2",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 930,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "9cf31738e74643f9",
+        "type": "ha-api",
+        "z": "f9f76430cac568e2",
+        "name": "",
+        "server": "b559dfa2.ecc5b8",
+        "debugenabled": false,
+        "protocol": "websocket",
+        "method": "get",
+        "path": "",
+        "data": "{\"type\":\"execute_script\",\"sequence\":[{\"service\":\"todo.get_items\",\"data\":{\"status\":[\"completed\"]},\"target\":{\"entity_id\":[\"todo.pastis\"]},\"response_variable\":\"service_result\"},{\"stop\":\"done\",\"response_variable\":\"service_result\"}]}",
+        "dataType": "json",
+        "responseType": "json",
+        "location": "payload",
+        "locationType": "msg",
+        "x": 370,
+        "y": 260,
+        "wires": [
+            [
+                "8025916fb7ffea03"
+            ]
+        ]
+    },
+    {
+        "id": "ff8da9ed301d563a",
+        "type": "split",
+        "z": "f9f76430cac568e2",
+        "name": "split",
+        "splt": ",",
+        "spltType": "str",
+        "arraySplt": 1,
+        "arraySpltType": "len",
+        "stream": false,
+        "addname": "",
+        "x": 730,
+        "y": 260,
+        "wires": [
+            [
+                "86a113afe94124aa",
+                "255dc0eb8a8a40cf"
+            ]
+        ]
+    },
+    {
+        "id": "8025916fb7ffea03",
+        "type": "change",
+        "z": "f9f76430cac568e2",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "$join(payload.response.*.items.summary,\",\")",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 540,
+        "y": 260,
+        "wires": [
+            [
+                "ff8da9ed301d563a"
+            ]
+        ]
     },
     {
         "id": "3b20af8332096715",
